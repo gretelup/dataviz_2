@@ -7,10 +7,11 @@ Create an interactive dashboard targetting people looking for homes in NJ who wa
 * Transportation Data
 
 ## Group Members
-Arjun Subramaniam
-Smita Sharma
-Mike Lygas
-Gretel Uptegrove
+
+* Arjun Subramaniam
+* Smita Sharma
+* Mike Lygas
+* Gretel Uptegrove
 
 ## Datasets used
 
@@ -27,6 +28,7 @@ A friend is looking for a place to live in New Jersey and would find it useful t
 
 ## Visualization Examples for Inspiration
 
-![New Jersey Information](Images/NJ_info.png)
-![Diversity Information](Images/Diversity.png)
-![Transportation Report Card](Images/Score_card.png)
+![New Jersey Information](images/NJ_info.png)
+![Diversity Information](images/Diversity.png)
+![Transportation Report Card](images/Score_card.png)
+
