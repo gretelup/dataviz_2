@@ -21,6 +21,7 @@ Create an interactive dashboard targetting people looking for homes in NJ who wa
 * [School Location Data](https://njogis-newjersey.opendata.arcgis.com/datasets/d8223610010a4c3887cfb88b904545ff_4)
 * [Railroad Station Location](http://njogis-newjersey.opendata.arcgis.com/datasets/new-jersey-railroad-stations)
 * [Bus Stop Location](http://njogis-newjersey.opendata.arcgis.com/datasets/new-jersey-bus-stops)
+* [Median Income per School District](https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?pid=ACS_17_5YR_S1901&prodType=table)
 
 ## Inspiration
 
