@@ -12,7 +12,8 @@ test_df = pd.read_csv(os.path.join("Resources", "school_test.csv"))
 
 # Clean contact dataframe
 # Drop unnecessary columns
-contact_df = contact_df[["DISTRICT_CODE", "DISTRICT_NAME", "SCHOOL_CODE", "SCHOOL_NAME", "GRADESPAN"]]
+contact_df = contact_df[["DISTRICT_CODE", "DISTRICT_NAME", "SCHOOL_CODE", \
+    "SCHOOL_NAME", "GRADESPAN"]]
 
 # Verify no missing data
 contact_df.isnull().sum()
@@ -21,7 +22,8 @@ contact_df.isnull().sum()
 contact_df.dtypes
 
 # Create unique key column from district and school codes
-contact_df["DS_CODE"] = contact_df["DISTRICT_CODE"].map(str) + "-" + contact_df["SCHOOL_CODE"].map(str)
+contact_df["DS_CODE"] = contact_df["DISTRICT_CODE"].map(str) + "-" + \
+    contact_df["SCHOOL_CODE"].map(str)
 
 # Verify no duplicate district-school codes
 contact_df[contact_df.duplicated(['DS_CODE'])]
@@ -34,7 +36,9 @@ contact_df.GRADESPAN.unique()
 # Drop and rename columns
 ratio_df = ratio_df[["DistrictCode", "SchoolCode", "Student_Teacher_School", \
     "Student_Teacher_District"]]
-ratio_df = ratio_df.rename(columns={"DistrictCode": "DISTRICT_CODE", "SchoolCode": "SCHOOL_CODE",                                     "Student_Teacher_School": "SCH_RAT", "Student_Teacher_District": "DIST_RAT"})
+ratio_df = ratio_df.rename(columns={"DistrictCode": "DISTRICT_CODE", \
+    "SchoolCode": "SCHOOL_CODE","Student_Teacher_School": "SCH_RAT", \
+    "Student_Teacher_District": "DIST_RAT"})
 
 # Verify no missing data
 ratio_df.isnull().sum()
@@ -57,9 +61,8 @@ ratio_df.SCH_RAT.unique()
 # So as to provide as little inaccurate data as possible, 
 # replaced these values with None
 # Also replace "N" values with None
-
-ratio_df = ratio_df.replace(["148:1", "53:1", "56:1", "50:1", "152:1", "66:1", \
-    "106:1", "74:1", "245:1", "268:1", "520:1", "327:1", "N"], None)
+ratio_df = ratio_df.replace(["148:1", "53:1", "56:1", "50:1", "152:1", \
+    "66:1", "106:1", "74:1", "245:1", "268:1", "520:1", "327:1", "N"], None)
 
 # Clean expense dataframe
 # Drop and rename columns
@@ -85,8 +88,10 @@ exp_df.dtypes
 # Clean test dataframe
 
 # Drop and rename columns
-test_df = test_df[["DistrictCode", "SchoolCode", "Test", "Subject", "School_Avg", "State_avg"]]
-test_df = test_df.rename(columns={"DistrictCode": "DISTRICT_CODE", "SchoolCode": "SCHOOL_CODE",                                  "SchoolCode": "SCHOOL_CODE", "Test": "TEST", "School_Avg": "SCH_AVG",                                   "State_avg": "STATE_AVG"})
+test_df = test_df[["DistrictCode", "SchoolCode", "Test", "Subject", \
+    "School_Avg", "State_avg"]]
+test_df = test_df.rename(columns= {"DistrictCode": "DISTRICT_CODE", \
+    "SchoolCode": "SCHOOL_CODE", "Test": "TEST", "School_Avg": "SCH_AVG",                                   "State_avg": "STATE_AVG"})
 
 # Verify no missing data
 test_df.isnull().sum()
@@ -95,7 +100,8 @@ test_df.isnull().sum()
 test_df.drop_duplicates()
 
 # Create unique key column from district and school codes
-test_df["DS_CODE"] = test_df["DISTRICT_CODE"].map(str) + "-" + test_df["SCHOOL_CODE"].map(str)
+test_df["DS_CODE"] = test_df["DISTRICT_CODE"].map(str) + "-" + \
+    test_df["SCHOOL_CODE"].map(str)
 
 # Combine test and subject columns
 test_df["TEST"] = test_df["TEST"] + ": " + test_df["Subject"]
@@ -117,8 +123,3 @@ test_df["SCH_AVG"] = test_df["SCH_AVG"].astype('int64')
 
 # Verify values are of the correct type
 test_df.dtypes
-
-contact_df.to_csv(os.path.join('Data_temp', 'school_contact_cleaned.csv'))
-ratio_df.to_csv(os.path.join('Data_temp', 'school_ratio_cleaned.csv'))
-exp_df.to_csv(os.path.join('Data_temp', 'school_expense_cleaned.csv'))
-test_df.to_csv(os.path.join('Data_temp', 'school_test_cleaned.csv'))
