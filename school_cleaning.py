@@ -66,8 +66,18 @@ ratio_df[ratio_df.duplicated(['DS_CODE'])]
 ratio_df.SCH_RAT.unique()
 
 # Replaced "N" values and likely inaccurate values with None
-ratio_df = ratio_df.replace(["148:1", "53:1", "56:1", "50:1", "152:1", \
-    "66:1", "106:1", "74:1", "245:1", "268:1", "520:1", "327:1", "N"], None)
+ratio_df = ratio_df.replace(["148:1", "53:1", "56:1", "50:1", "152:1", "66:1", "106:1", "74:1",\
+                             "245:1", "268:1", "520:1", "327:1", "N"], None)
+
+# Convert ratios to a single number and cast them as integers
+temp_df = ratio_df["SCH_RAT"].str.split(":", n = 1, expand = True)
+ratio_df["SCH_RAT"] = temp_df[0].astype('int64')
+
+temp_df = ratio_df["DIST_RAT"].str.split(":", n = 1, expand = True)
+ratio_df["DIST_RAT"] = temp_df[0].astype('int64')
+
+# Verify values are of the correct type
+ratio_df.dtypes
 
 # Clean expense dataframe
 # Drop and rename columns
