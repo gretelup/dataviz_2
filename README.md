@@ -1,10 +1,8 @@
 # The Lovely Garden State: Interactive Web Dashboard
 
-Create an interactive dashboard targetting people looking for homes in NJ who want to know:
+## Summary
 
-* The School Performance Information
-* Hospital Rankings and availability
-* Transportation Data
+We have created a map with an interactive dashboard for families looking to move to or within NJ that provides the user important information about a city in an easy to understand manner. The information includes school performance information, hospital rankings and availability, median household income, and transportation data.
 
 ## Group Members
 
@@ -13,18 +11,30 @@ Create an interactive dashboard targetting people looking for homes in NJ who wa
 * Mike Lygas
 * Gretel Uptegrove
 
-## Datasets used
-
-* [Hospital Rating Data](https://data.medicare.gov/Hospital-Compare/Hospital-General-Information/xubh-q36u)
-* [Hospital Location Data](https://njogis-newjersey.opendata.arcgis.com/datasets/hospitals)
-* [New Jersey School Performance Reports](https://rc.doe.state.nj.us/ReportsDatabase.aspx)
-* [School Location Data](https://njogis-newjersey.opendata.arcgis.com/datasets/d8223610010a4c3887cfb88b904545ff_4)
-* [Railroad Station Location](http://njogis-newjersey.opendata.arcgis.com/datasets/new-jersey-railroad-stations)
-* [Bus Stop Location](http://njogis-newjersey.opendata.arcgis.com/datasets/new-jersey-bus-stops)
-
-## Inspiration
+## Motivation
 
 A friend is looking for a place to live in New Jersey and would find it useful to have access to a tool that provides information important to families about possible locations to move to.
+
+## Sources
+
+* Hospital Rating Data from [Medicare](https://data.medicare.gov/Hospital-Compare/Hospital-General-Information/xubh-q36u)
+  * Hospital location and ratings data
+  * INSERT MORE INFO HERE ABOUT THE SPECIFIC DATA
+* New Jersey School Performance Reports from [New Jersey Department of Education](https://rc.doe.state.nj.us/ReportsDatabase.aspx)
+  * Performance data for schools administered by NJ Department of Education. Metrics include:
+    * Student to teacher ratio by school
+    * Per pupil expenditure by school district
+    * Standardized test scores by school
+* Median Income per School District from [Census American FactFinder](https://factfinder.census.gov/faces/tableservices/jsf/pages/productview.xhtml?pid=ACS_17_5YR_S1901&prodType=table)
+  * Median household income by school district in NJ
+* School Location Data from [State of New Jersey - GIS Open Data](https://njogis-newjersey.opendata.arcgis.com/datasets/d8223610010a4c3887cfb88b904545ff_4)
+  * Location of schools administered by NJ Department of Education
+* Railroad Station Location from [State of New Jersey - GIS Open Data](http://njogis-newjersey.opendata.arcgis.com/datasets/new-jersey-railroad-stations)
+  * Location of all commuter train stations in NJ operated by:
+    * NJ Transit
+    * Port Authority Trans Hudson (PATH)
+    * Port Authority Transit Corporation (PATCO)
+    * Southeastern Pennsylvania Transportation Authority (SEPTA)
 
 ## Visualization Examples for Inspiration
 
@@ -35,6 +45,22 @@ A friend is looking for a place to live in New Jersey and would find it useful t
 ## Workflow
 
 ### Step 1: Extract Data
+
+* Hospital Ratings Data:
+
+* New Jersey School Performance Reports:
+  * Downloaded Excel file of 2017-18 Performance Reports Database by School: <https://rc.doe.state.nj.us/ReportsDatabase/PerformanceReports.xlsx>.
+  * Extracted worksheet pages for desired metrics and exported as csv files.
+  * Using jupyter notebook, imported csv data and converted to dataframes using PANDAS library.
+  * Cleaned data in jupyter notebook.
+    * Verified metrics fell within reasonable range
+      * Student to teacher ratio: As to not provide misleading data, we erred on the side of caution and removed student to teacher ratios greater than or equal to 50:1 as they had a high probability as being faulty  based on a report from the Department of Education for 2011-2012 <https://nces.ed.gov/pubs2013/2013441.pdf>, which identifies the highest student to teacher ratio by state to be 23.4 and lowest to be 10.7.
+  * Exported notebook code as python script and integrated it into clean.py.
+  * Exported data from dataframe into SQL database.
+
+* Median Income per School District:
+
+* School and Railroad location Data:
 
 ### Step 2: Clean Data
 
