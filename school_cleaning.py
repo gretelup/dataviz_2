@@ -22,6 +22,10 @@ contact_df.isnull().sum()
 # Verify data are of correct type
 contact_df.dtypes
 
+# Add leading zeros to district and school codes
+contact_df["DISTRICT_CODE"] = contact_df["DISTRICT_CODE"].apply(lambda x: "{0:0>4}".format(x))
+contact_df["SCHOOL_CODE"] = contact_df["SCHOOL_CODE"].apply(lambda x: "{0:0>3}".format(x))
+
 # Create unique key column from district and school codes
 contact_df["DS_CODE"] = contact_df["DISTRICT_CODE"].map(str) + "-" + \
     contact_df["SCHOOL_CODE"].map(str)
@@ -47,6 +51,10 @@ ratio_df.isnull().sum()
 # Verify data are of correct type
 ratio_df.dtypes
 
+# Add leading zeros to district and school codes
+ratio_df["DISTRICT_CODE"] = ratio_df["DISTRICT_CODE"].apply(lambda x: "{0:0>4}".format(x))
+ratio_df["SCHOOL_CODE"] = ratio_df["SCHOOL_CODE"].apply(lambda x: "{0:0>3}".format(x))
+
 # Create unique key column from district and school codes
 ratio_df["DS_CODE"] = ratio_df["DISTRICT_CODE"].map(str) + "-" + \
     ratio_df["SCHOOL_CODE"].map(str)
@@ -57,11 +65,7 @@ ratio_df[ratio_df.duplicated(['DS_CODE'])]
 # Review ratios to verify no junk data
 ratio_df.SCH_RAT.unique()
 
-# Based on research, we decided probable inaccurate data would be values 
-# greater than 50:1
-# So as to provide as little inaccurate data as possible, 
-# replaced these values with None
-# Also replace "N" values with None
+# Replaced "N" values and likely inaccurate values with None
 ratio_df = ratio_df.replace(["148:1", "53:1", "56:1", "50:1", "152:1", \
     "66:1", "106:1", "74:1", "245:1", "268:1", "520:1", "327:1", "N"], None)
 
@@ -73,6 +77,9 @@ exp_df = exp_df.rename(columns={"DistrictCode": "DISTRICT_CODE", \
 
 # Verify no null values
 exp_df.isnull().sum()
+
+# Add leading zeros to district code
+exp_df["DISTRICT_CODE"] = exp_df["DISTRICT_CODE"].apply(lambda x: "{0:0>4}".format(x))
 
 # Verify no duplicate districts
 exp_df[exp_df.duplicated(["DISTRICT_CODE"])]
@@ -99,6 +106,10 @@ test_df.isnull().sum()
 
 # Drop any duplicate rows
 test_df.drop_duplicates()
+
+# Add leading zeros to district and school codes
+test_df["DISTRICT_CODE"] = test_df["DISTRICT_CODE"].apply(lambda x: "{0:0>4}".format(x))
+test_df["SCHOOL_CODE"] = test_df["SCHOOL_CODE"].apply(lambda x: "{0:0>3}".format(x))
 
 # Create unique key column from district and school codes
 test_df["DS_CODE"] = test_df["DISTRICT_CODE"].map(str) + "-" + \
