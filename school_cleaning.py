@@ -2,6 +2,7 @@
 # Import Dependencies
 import pandas as pd
 import os
+import sqlite3
 
 
 # Import CSV and convert to dataframes
@@ -123,3 +124,7 @@ test_df["SCH_AVG"] = test_df["SCH_AVG"].astype('int64')
 
 # Verify values are of the correct type
 test_df.dtypes
+
+# connect to database and drop/insert 'test' table if exists
+conn = sqlite3.connect('nj_db.db')
+test_df.to_sql("test",conn,if_exists="replace")
