@@ -9,44 +9,42 @@ app = Flask(__name__)
 # Create database
 conn = sqlite3.connect('nj_db.db')
 
-
-# Create data files
-rail_file = open('rail.geojson')
-rail_json = json.load(rail_file)
-
-hospital_file = open('Hospitals.geojson')
-hospital_json = json.load(hospital_file)
-
 school_file = open('school.geojson')
 school_json = json.load(school_file)
 
-# Create routes
-@app.route('/hospital_data')
-def hospital_data():
-    r = make_response(json.dumps(hospital_json))
-    r.headers['Content-Type'] = 'application/json'
-    return r
-
-@app.route('/rail_data')
-def rail_data():
-    r = make_response(json.dumps(rail_json))
-    r.headers['Content-Type'] = 'application/json'
-    return r
-
-@app.route('/school_data')
-def school_data():
-    c = conn.cursor()
-    r = make_response(json.dumps(school_json))
-    r.headers['Content-Type'] = 'application/json'
-    return r
-
-@app.route('/info')
-def info():
-    city = request.args.get('city')
-    county = request.args.get('county')
+#Create routes 
+@app.route('/HOSPITAL/COUNTIES/<COUNTY>')
+def hospital_county(COUNTY):
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
-    data = c.execute('SELECT * FROM school WHERE CITY = ? OR COUNTY = ?',[city,county]).fetchall()
+    data = c.execute('SELECT * FROM hospital WHERE COUNTY = ?',[COUNTY]).fetchall()
+    conn.commit()
+    conn.close()
+    return jsonify(data)
+
+@app.route('/SCHOOL/COUNTIES/<COUNTY>')
+def school_county(COUNTY):
+    conn = sqlite3.connect('nj_db.db')
+    c = conn.cursor()
+    data = c.execute('SELECT * FROM school WHERE COUNTY = ?',[COUNTY]).fetchall()
+    conn.commit()
+    conn.close()
+    return jsonify(data)
+   
+@app.route('/HOSPITAL/CITIES/<CITY>')
+def hospital_city(CITY):
+    conn = sqlite3.connect('nj_db.db')
+    c = conn.cursor()
+    data = c.execute('SELECT * FROM hospital WHERE CITY = ?',[CITY]).fetchall()
+    conn.commit()
+    conn.close()
+    return jsonify(data)
+
+@app.route('/SCHOOL/CITIES/<CITY>')
+def school_city(CITY):
+    conn = sqlite3.connect('nj_db.db')
+    c = conn.cursor()
+    data = c.execute('SELECT * FROM school WHERE CITY = ?',[CITY]).fetchall()
     conn.commit()
     conn.close()
     return jsonify(data)
