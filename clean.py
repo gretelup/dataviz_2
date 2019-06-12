@@ -173,7 +173,3 @@ def clean_hospital():
     # connect to database and drop/insert tables if exists
     conn = sqlite3.connect('nj_db.db')
     hospital_nj_df.to_sql("hospitals",conn,if_exists="replace")
-
-clean_school()
-clean_income_zip()
-clean_hospital()

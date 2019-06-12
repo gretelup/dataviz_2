@@ -1,7 +1,8 @@
 import sqlite3
 import json
+import os
 
-hospital_file = open('Hospitals.geojson')
+hospital_file = open(os.path.join("Resources", "Hospitals.geojson"))
 hospital_json = json.load(hospital_file)
 hospital_file.close()
 
