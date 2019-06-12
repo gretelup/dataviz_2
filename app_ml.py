@@ -1,16 +1,28 @@
 import json
 import sqlite3
+import pandas as pd
+import os
 
 from flask import Flask, jsonify
 from flask import request
 from flask import make_response
+from clean import (
+    clean_school,
+    clean_income_zip,
+    clean_hospital)
+
 app = Flask(__name__)
 
 # Create database
 conn = sqlite3.connect('nj_db.db')
 
-school_file = open('school.geojson')
-school_json = json.load(school_file)
+# school_file = open('school.geojson')
+# school_json = json.load(school_file)
+
+# Clean data and enter into database
+clean_school()
+clean_income_zip()
+clean_hospital()
 
 #Create routes 
 @app.route('/HOSPITAL/COUNTIES/<COUNTY>')
