@@ -22,7 +22,8 @@ c.execute('''CREATE TABLE "school" (
     "SCHOOLCODE"    TEXT,
     "DS_CODE"       TEXT,
     "LATITUDE"      DECIMAL,
-    "LONGITUDE"     DECIMAL
+    "LONGITUDE"     DECIMAL,
+    "ZIP"           TEXT
     
 
 )''')
@@ -44,9 +45,10 @@ for f in school_json['features']:
     row.append(f['properties']['DIST_CODE']+"-"+(f['properties']['SCHOOLCODE']))
     row.append(f['geometry']['coordinates'][0])
     row.append(f['geometry']['coordinates'][1])
+    row.append(f['properties']['ZIP_TRUNC'])
     rows.append(tuple(row))
     
 
-c.executemany('INSERT INTO school VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)', rows)
+c.executemany('INSERT INTO school VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', rows)
 conn.commit()
 conn.close()
