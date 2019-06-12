@@ -14,21 +14,69 @@
     crossorigin=""></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <link rel="stylesheet" href="../static/css/style.css" />
+  <link rel="stylesheet" href="js/leaflet.css" />
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" />
+  <script src="js/leaflet.js"></script>
+  <script src="js/jquery.js"></script>
+
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet"
+    integrity="sha384-T8Gy5hrqNKT+hzMclPo118YTQO6cYprQmhrYwIiQ/3axmI1hQomh7Ud2hPOy8SP1" crossorigin="anonymous">
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-3-typeahead/4.0.1/bootstrap3-typeahead.min.js"></script>
+
+  <link rel="stylesheet" href="js/styles.css" />
 
 </head>
 
 <body>
   <h1 style="text-align:center;" style="font-size:80px;">The Lovely Garden State</h1>
   <div class="container"></div>
-  <div id="map" style="text-align:center;" style="width: 600px; height: 400px; border: 1px solid #AAA; position:relative;"></div>
+  <div id="map" style="text-align:center;"
+    style="width: 600px; height: 400px; border: 1px solid #AAA; position:relative;"></div>
   <!-- DROPDOWN -->
   <select id="selCounty" onchange="optionChanged(this.value)"></select>
 
   <!-- SCHOOL & HOSPITAL PLOTS -->
   <div id="county-school-plot"></div>
+  <div class="clontainer mt-5">
+    <div class="row">
+      <div class="col">
+        <div class="card">
+          <div class="card-body">
+            <h2 class="card-title" style="text-align:center;">Plot #1</h2>
+            <p>Here is a plot of the schools in the selected County</p>
+          </div>
+        </div>
+      </div>
   <div id="state-school-plot"></div>
+  <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title" style="text-align:center;">Plot #2</h2>
+          <p>Here is a plot of the schools in the selected County</p>
+        </div>
+      </div>
+    </div>
   <div id="county-hospital-plot"></div>
+  <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title"style="text-align:center;">Plot #3</h2>
+          <p>Here is a plot of the Hospitals in the selected County</p>
+        </div>
+      </div>
+    </div>
   <div id="state-hospital-plot"></div>
+  <div class="col">
+      <div class="card">
+        <div class="card-body">
+          <h2 class="card-title"style="text-align:center;">Plot #4</h2>
+          <p>Here is a plot of the Hospitals in the selected County</p>
+        </div>
+      </div>
+    </div>
 
   <!-- API key -->
   <script type="text/javascript" src="../static/js/config.js"></script>
