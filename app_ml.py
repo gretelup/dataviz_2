@@ -47,12 +47,29 @@ def index():
     return render_template("index.html")
 
 
+@app.route('/counties')
+def counties():
+    """DESCRIBE WHAT THIS DOES"""
+
+    conn = sqlite3.connect('nj_db.db')
+    c = conn.cursor()
+
+    # SMITA DO THIS - RETURN A SIMPLE LIST OF COUNTIES
+    # data = c.execute('')
+    conn.commit()
+    conn.close()
+    return jsonify(data)
+
+
 @app.route('/school/counties/<COUNTY>')
 def school_county(COUNTY):
     """DESCRIBE WHAT THIS DOES"""
 
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
+
+    # SMITA THIS NEEDS TO BE FIXED B/C NO COUNTY IN SCHOOL; NEED TO DO FANCY MATCHING W/ DS_CODE
+    # JOIN BETWEEN school table and the geojson school table by DS_CODE, find county
     data = c.execute('SELECT * FROM school WHERE COUNTY = ?',[COUNTY]).fetchall()
     conn.commit()
     conn.close()
@@ -78,7 +95,7 @@ def school_state():
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
     
-    # HERE'S WHERE THE WORK GOERS
+    # SMITA - DO THIS MATH_SCHOOL_AVG, MATH_STATE_AVG, ENG_SCHOOL_AVG, ENG_STATE_AVG- return 
     # data = c.execute()
     
     conn.commit()
@@ -94,6 +111,7 @@ def hospital_state():
     c = conn.cursor()
     
     # HERE'S WHERE THE WORK GOERS
+    # SMITA - RETURN ALL REQUIRED HOSPITAL DATA
     # data = c.execute()
     
     conn.commit()

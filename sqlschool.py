@@ -1,7 +1,8 @@
 import sqlite3
 import json
+import os
 
-school_file = open('school.geojson')
+school_file = open(os.path.join("Resources", "school.geojson"))
 school_json = json.load(school_file)
 school_file.close()
 
