@@ -1,2 +1,0 @@
-// MAKE SURE THIS IS IN GITIGNORE
-const API_KEY = ""

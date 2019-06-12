@@ -148,14 +148,12 @@ def clean_hospital():
     # hospital_df.dtypes
     # hospital_df.infer_objects().dtypes
     hospital_df.dtypes
-    total_rows =hospital_df["Hospital Name"].count
 
     # Drop any duplicate rows
     hospital_df.drop_duplicates()
 
     # hospital_nj_df=hospital_df.loc[hospital_df['State'].isin("NJ")]
     hospital_nj_df= hospital_df[hospital_df['State'] == "NJ"]
-    total_rows =hospital_nj_df["Hospital Name"].count
 
     # Drop and rename columns
     hospital_nj_df= hospital_nj_df[["Hospital Name","City","ZIP Code","County Name","Hospital overall rating",
