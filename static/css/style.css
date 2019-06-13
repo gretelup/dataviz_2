@@ -1,11 +1,16 @@
 body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
 }
-  #map,
+#map-container,
   body,
   html {
     height: 90%;
-    width: 70%;
+    width: 100%;
+  }
+
+#map {
+    height: 100%;
+    width: 50%;
   }
 .box {
   background-color: darkkhaki;
