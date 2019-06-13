@@ -72,11 +72,13 @@ def school_county(COUNTY):
     # SMITA THIS NEEDS TO BE FIXED B/C NO COUNTY IN SCHOOL; NEED TO DO FANCY MATCHING W/ DS_CODE
     # JOIN BETWEEN school table and the geojson school table by DS_CODE, find county
 
-    query='SELECT T.MATH_SCH_AVG,T.MATH_STATE_AVG,T.ENG_SCH_AVG,T.ENG_STATE_AVG,'\
-    'T.DS_CODE,S.COUNTY'\
-    'FROM TEST T'\
-    'INNER JOIN SCHOOL S'\
-    'WHERE T.DS_CODE=S.DS_CODE AND COUNTY=?'
+    query='''SELECT SCHOOL.COUNTY county, SCHOOL.CATEGORY category,
+    ROUND(AVG(TEST.MATH_SCH_AVG), 2) math_avg, ROUND(AVG(TEST.ENG_SCH_AVG), 2) eng_avg,
+    ROUND(AVG(TEST.MATH_STATE_AVG), 2) math_state_avg, ROUND(AVG(TEST.ENG_STATE_AVG), 2) eng_state_avg
+    FROM SCHOOL
+    JOIN TEST ON TEST.DS_CODE=SCHOOL.DS_CODE
+    WHERE SCHOOL.COUNTY = ?
+    GROUP BY SCHOOL.COUNTY, SCHOOL.CATEGORY'''
 
     data = c.execute(query,[COUNTY]).fetchall()
     conn.commit()
@@ -90,10 +92,10 @@ def hospital_county(COUNTY):
 
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
-    query2='SELECT H.NAME,H.CITY,H.ZIP,H.COUNTY,H.RATE,H.CARE_EFF,Z.LAT,Z.LNG'\ 
-    'FROM hospitals H'\
-    'JOIN zip Z'\
-    'WHERE H.zip=Z.zip AND COUNTY = ?'
+    query2='''SELECT H.NAME,H.CITY,H.ZIP,H.COUNTY,H.RATE,H.CARE_EFF,Z.LAT,Z.LNG'\ 
+    FROM hospitals H
+    JOIN zip Z
+    WHERE H.zip=Z.zip AND COUNTY = ?'''
     data = c.execute(query2,[COUNTY]).fetchall()
     conn.commit()
     conn.close()
