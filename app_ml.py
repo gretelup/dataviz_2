@@ -49,76 +49,72 @@ def index():
 
 @app.route('/counties')
 def counties():
-    """DESCRIBE WHAT THIS DOES"""
+    """Returns jsonified list of all counties in NJ"""
 
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
 
-    # SMITA DO THIS - RETURN A SIMPLE LIST OF COUNTIES
     data = c.execute('SELECT DISTINCT COUNTY FROM hospitals').fetchall()
     #Returns 21 county
     conn.commit()
     conn.close()
     return jsonify(data)
 
-
+# SMITA / MIKE - CAN WE GET THIS TO RETURN A DICTIONARY LIKE OBJECT INSTEAD?
+# E.G., {county: MORRIS, type: Public, "avg_math: 588.11", etc}???
 @app.route('/school/counties/<COUNTY>')
 def school_county(COUNTY):
-    """DESCRIBE WHAT THIS DOES"""
+    """Returns jsonified list of average SAT scores for county and state"""
+
 
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
 
-    # SMITA THIS NEEDS TO BE FIXED B/C NO COUNTY IN SCHOOL; NEED TO DO FANCY MATCHING W/ DS_CODE
-    # JOIN BETWEEN school table and the geojson school table by DS_CODE, find county
-
     query='''SELECT SCHOOL.COUNTY county, SCHOOL.CATEGORY category,
-    ROUND(AVG(TEST.MATH_SCH_AVG), 2) math_avg, ROUND(AVG(TEST.ENG_SCH_AVG), 2) eng_avg,
-    ROUND(AVG(TEST.MATH_STATE_AVG), 2) math_state_avg, ROUND(AVG(TEST.ENG_STATE_AVG), 2) eng_state_avg
-    FROM SCHOOL
-    JOIN TEST ON TEST.DS_CODE=SCHOOL.DS_CODE
-    WHERE SCHOOL.COUNTY = ?
-    GROUP BY SCHOOL.COUNTY, SCHOOL.CATEGORY'''
+        ROUND(AVG(TEST.MATH_SCH_AVG), 2) math_avg, ROUND(AVG(TEST.ENG_SCH_AVG), 2) eng_avg,
+        ROUND(AVG(TEST.MATH_STATE_AVG), 2) math_state_avg, ROUND(AVG(TEST.ENG_STATE_AVG), 2) eng_state_avg
+        FROM SCHOOL
+        JOIN TEST ON TEST.DS_CODE=SCHOOL.DS_CODE
+        WHERE SCHOOL.COUNTY = ?
+        GROUP BY SCHOOL.COUNTY, SCHOOL.CATEGORY'''
 
     data = c.execute(query,[COUNTY]).fetchall()
     conn.commit()
     conn.close()
     return jsonify(data)
 
-
+# Again, any way to get a dictionary like object?
 @app.route('/hospital/counties/<COUNTY>')
 def hospital_county(COUNTY):
     """DESCRIBE WHAT THIS DOES"""
 
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
-    query2='''SELECT H.NAME,H.CITY,H.ZIP,H.COUNTY,H.RATE,H.CARE_EFF,Z.LAT,Z.LNG'\ 
-    FROM hospitals H
-    JOIN zip Z
-    WHERE H.zip=Z.zip AND COUNTY = ?'''
+    query2='''SELECT H.NAME,H.CITY,H.ZIP,H.COUNTY,H.RATE,H.CARE_EFF,Z.LAT,Z.LNG 
+        FROM hospitals H
+        JOIN zip Z
+        WHERE H.zip=Z.zip AND COUNTY = ?'''
     data = c.execute(query2,[COUNTY]).fetchall()
     conn.commit()
     conn.close()
     return jsonify(data)
 
-
+# AGAIN, CAN WE GET A DICTIONARY LIKE OBJECT?
 @app.route('/school/state')
 def school_state():
-    """DESCRIBE WHAT THIS DOES"""
+    """Returns jsonified list of average SAT scores for state """
 
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
     
-    # SMITA - DO THIS MATH_SCHOOL_AVG, MATH_STATE_AVG, ENG_SCHOOL_AVG, ENG_STATE_AVG- return 
-    # data = c.execute()
-    query_s='SELECT MATH_SCH_AVG,MATH_STATE_AVG,ENG_SCH_AVG,ENG_STATE_AVG,'\
-    'FROM TEST T'
-    data=c.execute(query_s)
+    query_s='''SELECT MATH_SCH_AVG,MATH_STATE_AVG,ENG_SCH_AVG,ENG_STATE_AVG
+        FROM test T'''
+    data=c.execute(query_s).fetchall()
     conn.commit()
     conn.close()
     return jsonify(data)
 
-
+#Again, dictionary type object?
 @app.route('/hospital/state')
 def hospital_state():
     """DESCRIBE WHAT THIS DOES"""
@@ -129,10 +125,10 @@ def hospital_state():
     # HERE'S WHERE THE WORK GOERS
     # SMITA - RETURN ALL REQUIRED HOSPITAL DATA
     # data = c.execute()
-    query_h='SELECT COUNTY, ROUND(AVG(RATE), 2) avg_rate'\
-    'FROM HOSPITALS'\
-    'GROUP BY COUNTY'
-    data=c.execute(query_h)
+    query_h='''SELECT COUNTY, ROUND(AVG(RATE), 2) avg_rate
+        FROM hospitals
+        GROUP BY COUNTY'''
+    data=c.execute(query_h).fetchall()
     conn.commit()
     conn.close()
     return jsonify(data)
