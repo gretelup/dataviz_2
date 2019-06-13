@@ -90,7 +90,11 @@ def hospital_county(COUNTY):
 
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
-    data = c.execute('SELECT * FROM hospital WHERE COUNTY = ?',[COUNTY]).fetchall()
+    query2='SELECT H.NAME,H.CITY,H.ZIP,H.COUNTY,H.RATE,H.CARE_EFF,Z.LAT,Z.LNG'\ 
+    'FROM hospitals H'\
+    'JOIN zip Z'\
+    'WHERE H.zip=Z.zip AND COUNTY = ?'
+    data = c.execute(query2,[COUNTY]).fetchall()
     conn.commit()
     conn.close()
     return jsonify(data)
@@ -123,7 +127,10 @@ def hospital_state():
     # HERE'S WHERE THE WORK GOERS
     # SMITA - RETURN ALL REQUIRED HOSPITAL DATA
     # data = c.execute()
-    
+    query_h='SELECT COUNTY, ROUND(AVG(RATE), 2) avg_rate'\
+    'FROM HOSPITALS'\
+    'GROUP BY COUNTY'
+    data=c.execute(query_h)
     conn.commit()
     conn.close()
     return jsonify(data)
