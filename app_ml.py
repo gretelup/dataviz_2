@@ -55,7 +55,8 @@ def counties():
     c = conn.cursor()
 
     # SMITA DO THIS - RETURN A SIMPLE LIST OF COUNTIES
-    # data = c.execute('')
+    data = c.execute('SELECT DISTINCT COUNTY FROM hospitals')
+    #Returns 21 county
     conn.commit()
     conn.close()
     return jsonify(data)
@@ -70,7 +71,14 @@ def school_county(COUNTY):
 
     # SMITA THIS NEEDS TO BE FIXED B/C NO COUNTY IN SCHOOL; NEED TO DO FANCY MATCHING W/ DS_CODE
     # JOIN BETWEEN school table and the geojson school table by DS_CODE, find county
-    data = c.execute('SELECT * FROM school WHERE COUNTY = ?',[COUNTY]).fetchall()
+
+    query='SELECT T.MATH_SCH_AVG,T.MATH_STATE_AVG,T.ENG_SCH_AVG,T.ENG_STATE_AVG,'\
+    'T.DS_CODE,S.COUNTY'\
+    'FROM TEST T'\
+    'INNER JOIN SCHOOL S'\
+    'WHERE T.DS_CODE=S.DS_CODE AND COUNTY=?'
+
+    data = c.execute(query,[COUNTY]).fetchall()
     conn.commit()
     conn.close()
     return jsonify(data)
@@ -97,7 +105,9 @@ def school_state():
     
     # SMITA - DO THIS MATH_SCHOOL_AVG, MATH_STATE_AVG, ENG_SCHOOL_AVG, ENG_STATE_AVG- return 
     # data = c.execute()
-    
+    query_s='SELECT MATH_SCH_AVG,MATH_STATE_AVG,ENG_SCH_AVG,ENG_STATE_AVG,'\
+    'FROM TEST T'
+    data=c.execute(query_s)
     conn.commit()
     conn.close()
     return jsonify(data)
