@@ -55,7 +55,7 @@ def counties():
     c = conn.cursor()
 
     # SMITA DO THIS - RETURN A SIMPLE LIST OF COUNTIES
-    data = c.execute('SELECT DISTINCT COUNTY FROM hospitals')
+    data = c.execute('SELECT DISTINCT COUNTY FROM hospitals').fetchall()
     #Returns 21 county
     conn.commit()
     conn.close()

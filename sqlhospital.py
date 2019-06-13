@@ -31,7 +31,7 @@ for f in hospital_json['features']:
     row.append(f['properties']['LONGITUDE'])
     row.append(f['properties']['ADDRESS'])
 
-    rows.append(tuple(row)
+    rows.append(tuple(row))
 
 c.executemany('INSERT INTO hospital VALUES (?,?,?,?,?,?,?)', rows)
 conn.commit()
