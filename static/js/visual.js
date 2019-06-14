@@ -23,16 +23,16 @@ function schoolCountyPlot(county, plot_id) {
     //Group bar chart for SAT scores
     // Create trace
     var trace1 = {
-      x: [county ],
-      y: [math_avg,],
-      name: 'School AVG MATHSAT Scores in Counties',
+      x: ["Math SAT", "English SAT"],
+      y: [math_avg, eng_avg],
+      name: `${county} County`,
       type: 'bar'
     };
 
     var trace2 = {
-      x: [county],
-      y: [eng_avg, ],
-      name: 'School AVG ENGLISH SAT Scores in Counties',
+      x: ["Math SAT", "English SAT"],
+      y: [math_state_avg, eng_state_avg],
+      name: 'State',
       type: 'bar'
     };
     
@@ -48,9 +48,8 @@ function schoolCountyPlot(county, plot_id) {
 
 // TO TEST:
 // CHANGE test to various counties (note all caps)
-var test = "MORRIS"
-schoolCountyPlot(test, "plot1");
-schoolCountyPlot(test, "plot2");
+// var test = "MORRIS"
+// schoolCountyPlot(test, "plot1");
 
 // schoolCountyPlot(test, "plot3");
 // schoolCountyPlot(test, "plot4");
