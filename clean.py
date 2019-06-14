@@ -3,45 +3,45 @@ import pandas as pd
 import os
 import json
 
+# IF WE DECIDE TO ADD GEOJSON HOSPITAL CHANGE NAME
+# def clean_geojson_hospital():
+#     """Extracts location data from geojson for hospitals.
+#     Enters data into SQL database"""
 
-def clean_geojson_hospital():
-    """Extracts location data from geojson for hospitals.
-    Enters data into SQL database"""
 
+#     hospital_file = open(os.path.join("Resources", "Hospitals.geojson"))
+#     hospital_json = json.load(hospital_file)
+#     hospital_file.close()
 
-    hospital_file = open(os.path.join("Resources", "Hospitals.geojson"))
-    hospital_json = json.load(hospital_file)
-    hospital_file.close()
+#     conn = sqlite3.connect('nj_db.db')
+#     c = conn.cursor()
+#     c.execute('DROP TABLE IF EXISTS hospital;')
+#     c.execute("""CREATE TABLE "hospital" (
+#         "NAME"      TEXT,
+#         "TYPE"      TEXT,
+#         "COUNTY"	TEXT,
+#         "CITY"	TEXT,
+#         "LATITUDE"  NUMERIC,
+#         "LONGITUDE" NUMERIC,
+#         "ADDRESS"   TEXT
+#     )""")
 
-    conn = sqlite3.connect('nj_db.db')
-    c = conn.cursor()
-    c.execute('DROP TABLE IF EXISTS hospital;')
-    c.execute("""CREATE TABLE "hospital" (
-        "NAME"      TEXT,
-        "TYPE"      TEXT,
-        "COUNTY"	TEXT,
-        "CITY"	TEXT,
-        "LATITUDE"  NUMERIC,
-        "LONGITUDE" NUMERIC,
-        "ADDRESS"   TEXT
-    )""")
+#     rows = []
+#     for f in hospital_json['features']:
+#         row = []
+#         row.append(f['properties']['NAME'])
+#         row.append(f['properties']['TYPE'])
+#         row.append(f['properties']['COUNTY'])
+#         row.append(f['properties']['CITY'])
+#         row.append(f['properties']['LATITUDE'])
+#         row.append(f['properties']['LONGITUDE'])
+#         row.append(f['properties']['ADDRESS'])
 
-    rows = []
-    for f in hospital_json['features']:
-        row = []
-        row.append(f['properties']['NAME'])
-        row.append(f['properties']['TYPE'])
-        row.append(f['properties']['COUNTY'])
-        row.append(f['properties']['CITY'])
-        row.append(f['properties']['LATITUDE'])
-        row.append(f['properties']['LONGITUDE'])
-        row.append(f['properties']['ADDRESS'])
+#         rows.append(tuple(row))
 
-        rows.append(tuple(row))
-
-    c.executemany('INSERT INTO hospital VALUES (?,?,?,?,?,?,?)', rows)
-    conn.commit()
-    conn.close()
+#     c.executemany('INSERT INTO hospital VALUES (?,?,?,?,?,?,?)', rows)
+#     conn.commit()
+#     conn.close()
 
 
 def clean_geojson_school():
