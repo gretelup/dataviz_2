@@ -30,25 +30,25 @@ var stylelayer = {
   default: {
     color: "blue",
     opacity: 1,
-    fillcolor:"blue",
-    fillOpacity:0.1,
+    fillcolor: "blue",
+    fillOpacity: 0.1,
     weight: 0.5
   }
   ,
-  reset:{
+  reset: {
     color: "blue",
     opacity: 0.4,
     weight: 1
   }
   ,
-  highlight:{
+  highlight: {
     weight: 5,
     color: "red",
     dashArray: '',
     fillOpacity: 0.7
   }
   ,
-  selected:{
+  selected: {
     color: "green",
     opacity: 0.3,
     weight: 0.5
@@ -58,9 +58,9 @@ var stylelayer = {
 
 // Create map object and add layer
 var map = L.map("map", {
-    center: [40.0583, -74.4057],
-    zoom: 8
-  });
+  center: [40.0583, -74.4057],
+  zoom: 8
+});
 
 L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
   attribution: "Map data &copy; <a href=\"https://www.openstreetmap.org/\">OpenStreetMap</a> contributors, <a href=\"https://creativecommons.org/licenses/by-sa/2.0/\">CC-BY-SA</a>, Imagery © <a href=\"https://www.mapbox.com/\">Mapbox</a>",
@@ -72,110 +72,96 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 // Add county layers with default styling
 var geojson = L.geoJson(countiesData, {
   style: stylelayer.default,
-  // onEachFeature: onEachFeature
+  onEachFeature: onEachFeature
 }).addTo(map);
 
 // COMMENT FROM LINE 69 TO END FOR TESTING PURPOSES
-// // Define mouse commands
-// function onEachFeature(feature, layer) {
-//   layer.on({
-//       mouseover: highlightFeature,
-//       mouseout: resetHighlight,
-//       // GRETEL - FIX THIS
-//       click:console.log(feature.properties.COUNTY),
-//       click: zoomToFeature
-//           //dblclick : selectFeature
-//   });
-// }
+// Define mouse commands
+// WHAT ARE WE DOING WITH FEATURE HERE?
+function onEachFeature(feature, layer) {
+  layer.on({
+    mouseover: highlightFeature,
+    mouseout: resetHighlight,
+    click: zoomToFeature
+  });
+}
 
 
-// // Adds highlighting styling to county
-// function highlightFeature(e) {
-//     var layer = e.target;
-//     layer.setStyle(stylelayer.highlight);
-// }
+// Adds highlighting styling to county
+function highlightFeature(e) {
+  var layer = e.target;
+  layer.setStyle(stylelayer.highlight);
+}
 
-// // GRETEL - FIX THIS NOTE checkExistsLayers function
-// // Removes highlight styling from county 
-// function resetHighlight(e) {
-//   var layer = e.target;
-//   var feature = e.target.feature;
-//   if (checkExistsLayers(feature)) {
-//       setStyleLayer(layer, stylelayer.highlight)
-//   } else {
-//       setStyleLayer(layer, stylelayer.default)
-//   }
-// }
+// GRETEL - FIX THIS NOTE checkExistsLayers function
+// Removes highlight styling from county 
+function resetHighlight(e) {
+  var layer = e.target;
+  var feature = e.target.feature;
 
-
-// // GRETEL - FIX THIS USING ZACH'S STUFF
-// var featuresSelected = "nonsense"
-// function zoomToFeature(e) {
-
-//     var layer = e.target;
-//     var feature = e.target.feature;
-
-//     if (checkExistsLayers(feature)) {
-//         removerlayers(feature, setStyleLayer, layer, stylelayer.default)
-//         removeBounds(layer)
-
-//     } else {
-//         addLayers(feature, setStyleLayer, layer, stylelayer.highlight)
-//         addBounds(layer)
-//     }
-//     map.fitBounds(arrayBounds);
-//     // detailsselected.update(featuresSelected)
-// }
-
-// // GRETEL - I THINK THIS WAS THROWING ERRORS
-// // Sets initial bounds for map view
-// var corner1 = L.latLng(53.62, 2.931),
-//     corner2 = L.latLng(50.763, 7.182)
-// var initbounds = L.latLngBounds(corner1, corner2)
-// var arrayBounds = [];
-
-// // Adds boundaries to map view
-// function addBounds(layer) {
-//   arrayBounds.push(layer.getBounds())
-// }
-
-// // Remove boundaries from map view
-// function removeBounds(layer) {
-//   arrayBounds = arrayBounds.filter(bounds => bounds != layer.getBounds())
-// }
-
-// // Sets specified styling to selected layer
-// function setStyleLayer(layer, styleSelected) {
-//   layer.setStyle(styleSelected)
-// }
-
-// // GRETEL - FIX THIS
-// // Remove styling and charts from selected county
-// function removerlayers(feature, callback) {
-//   featuresSelected = featuresSelected.filter(obj => obj.COUNTY != feature.properties.COUNTY)
-//   callback(arguments[2], arguments[3])
-// }
+  if (layer.style == stylelayer.default) {
+    setStyleLayer(layer, stylelayer.highlight);
+  }
+  else {
+    setStyleLayer(layer, stylelayer.default);
+  }
+}
 
 
-// // GRETEL - FIX THIS
-// // Add styling and chart for selected county
-// function addLayers(feature, callback) {
-//   featuresSelected.push({
-//       COUNTY: feature.properties.COUNTY,
-//       feature: feature
-//   })
-//   callback(arguments[2], arguments[3])
-// }
 
-// // GRETEL - FIX THIS PER ZACH
-// // Add/Remove layer styling and chart for selected county
-// function checkExistsLayers(feature) {
-//   var result = false
-//   for (var i = 0; i < featuresSelected.length; i++) {
-//       if (featuresSelected[i].COUNTY == feature.properties.COUNTY) {
-//           result = true;
-//           break;
-//       }
-//   };
-//   return result
-// }
+var selectedFeature = "nonsense";
+var selectedLayer = "nonsense";
+var selectedCounty = "nonsense";
+function zoomToFeature(e) {
+
+  var layer = e.target;
+  var feature = e.target.feature;
+  var county = feature.properties.COUNTY
+
+  if (feature == selectedFeature) {
+    selectedFeature = "nonsense";
+    selectedLayer = "nonsense";
+    selectedCounty = "nonsense"
+    // Gretel: consider adding code here to get rid of plot & CHANGE SELECTOR
+    setStyleLayer(layer, stylelayer.default);
+    removeBounds(layer);
+  } 
+  else {
+    if (selectedFeature != "nonsense") {
+      setStyleLayer(selectedLayer, stylelayer.default);
+      removeBounds(selectedLayer);
+    }
+    setStyleLayer(layer, stylelayer.highlight);
+    addBounds(layer)
+    selectedFeature = feature;
+    selectedLayer = layer;
+    selectedCounty = county;
+    // schoolCountyPlot(county);
+    // schoolNJPlot(county);
+    // hospitalCountyPlot(county);
+    // CHANGE SELECTOR TO COUNTY;
+  }
+  map.fitBounds(arrayBounds);
+}
+
+// GRETEL - I THINK THIS WAS THROWING ERRORS
+// Sets initial bounds for map view
+var corner1 = L.latLng(53.62, 2.931),
+  corner2 = L.latLng(50.763, 7.182)
+var initbounds = L.latLngBounds(corner1, corner2)
+var arrayBounds = [];
+
+// Adds boundaries to map view
+function addBounds(layer) {
+  arrayBounds.push(layer.getBounds())
+}
+
+// Remove boundaries from map view
+function removeBounds(layer) {
+  arrayBounds = arrayBounds.filter(bounds => bounds != layer.getBounds())
+}
+
+// Sets specified styling to selected layer
+function setStyleLayer(layer, styleSelected) {
+  layer.setStyle(styleSelected)
+}

@@ -30,7 +30,7 @@ hospital_file = open(os.path.join("Resources", "hospitals.geojson"))
 hospital_json = json.load(hospital_file)
 
 # Clean data and import into database
-clean_geojson_hospital()
+# clean_geojson_hospital()
 clean_geojson_school()
 clean_school()
 clean_income_zip()
