@@ -133,12 +133,13 @@ def school_state():
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
     
-    query_s='''SELECT MATH_SCH_AVG,MATH_STATE_AVG,ENG_SCH_AVG,ENG_STATE_AVG
-        FROM test T'''
+    query_s='''SELECT T.MATH_SCH_AVG,T.MATH_STATE_AVG,T.ENG_SCH_AVG,T.ENG_STATE_AVG,S.COUNTY
+    FROM TEST T
+    JOIN SCHOOL S ON T.DS_CODE=S.DS_CODE'''
     data=c.execute(query_s).fetchall()
     test_dict=[]
     for d in data:
-        dict={"math_sch_avg":d[0],"math_state_avg":d[1],"eng_sch_avg":d[2],"eng_state_avg":d[3]}
+        dict={"math_sch_avg":d[0],"math_state_avg":d[1],"eng_sch_avg":d[2],"eng_state_avg":d[3],"COUNTY":d[4]}
         test_dict.append(dict)
     
     conn.commit()
