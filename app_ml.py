@@ -10,7 +10,7 @@ from flask import (
     request,
     make_response)
 from clean import (
-    clean_geojson_hospital,
+    # clean_geojson_hospital,
     clean_geojson_school,
     clean_school,
     clean_income_zip,
