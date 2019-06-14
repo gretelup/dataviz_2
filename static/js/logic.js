@@ -87,24 +87,24 @@ $.get(queryUrl, function (data) {
   }).addTo(map);
 });
 
-function optionChanged(county) {
-  console.log(`I changed the option to ${county}`);
-  $.get(queryUrl, function (response) {
-    console.log("in the query")
-    for (var i = 0; i < response.length; i++) {
-      var d_county = response[i].properties.COUNTY;
-      console.log(d_county);
-      if (d_county == county) {
-        feature = response[i];
-      }
-    }
-  }, "json");
+// function optionChanged(county) {
+//   console.log(`I changed the option to ${county}`);
+//   $.get(queryUrl, function (response) {
+//     console.log("in the query")
+//     for (var i = 0; i < response.length; i++) {
+//       var d_county = response[i].properties.COUNTY;
+//       console.log(d_county);
+//       if (d_county == county) {
+//         feature = response[i];
+//       }
+//     }
+//   }, "json");
   // if (dataCounty == county) {
   //   feature = data;
   // }
   // console.log(feature);
   // zoomToFeature(feature);
-}
+// }
 
 
 // $.get(queryUrl, function(data){
@@ -174,10 +174,12 @@ function zoomToFeature(e) {
     selectedFeature = feature;
     selectedLayer = layer;
     selectedCounty = county;
-    printCounty(county);
-    // schoolCountyPlot(county);
-    // schoolNJPlot(county);
-    // hospitalCountyPlot(county);
+    console.log(county);
+    schoolCountyPlot(county, "plot1")
+    // schoolNJPlot(county, "plot2");
+    // hospitalCountyPlot(county, "plot3");
+    // hospitalStatePlot(county, "plot4");
+    // reportCard(county);
     // CHANGE SELECTOR TO COUNTY;
   }
   // GRETEL - THIS IS THROWING AN ERROR
