@@ -75,6 +75,7 @@ def school_county(COUNTY):
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
 
+<<<<<<< HEAD
     query='''SELECT SCHOOL.COUNTY county,
         ROUND(AVG(TEST.MATH_SCH_AVG), 2) math_avg, ROUND(AVG(TEST.ENG_SCH_AVG), 2) eng_avg,
         ROUND(AVG(TEST.MATH_STATE_AVG), 2) math_state_avg, ROUND(AVG(TEST.ENG_STATE_AVG), 2) eng_state_avg
@@ -82,6 +83,23 @@ def school_county(COUNTY):
         JOIN TEST ON TEST.DS_CODE=SCHOOL.DS_CODE
         WHERE SCHOOL.COUNTY = ?
         GROUP BY SCHOOL.COUNTY'''
+||||||| merged common ancestors
+    query='''SELECT SCHOOL.COUNTY county, SCHOOL.CATEGORY category,
+        ROUND(AVG(TEST.MATH_SCH_AVG), 2) math_avg, ROUND(AVG(TEST.ENG_SCH_AVG), 2) eng_avg,
+        ROUND(AVG(TEST.MATH_STATE_AVG), 2) math_state_avg, ROUND(AVG(TEST.ENG_STATE_AVG), 2) eng_state_avg
+        FROM SCHOOL
+        JOIN TEST ON TEST.DS_CODE=SCHOOL.DS_CODE
+        WHERE SCHOOL.COUNTY = ?
+        GROUP BY SCHOOL.COUNTY, SCHOOL.CATEGORY'''
+=======
+    query='''SELECT school.COUNTY county, school.CATEGORY category,
+        ROUND(AVG(test.MATH_SCH_AVG), 2) math_avg, ROUND(AVG(test.ENG_SCH_AVG), 2) eng_avg,
+        ROUND(AVG(test.MATH_STATE_AVG), 2) math_state_avg, ROUND(AVG(test.ENG_STATE_AVG), 2) eng_state_avg
+        FROM school
+        JOIN test ON test.DS_CODE=school.DS_CODE
+        WHERE school.COUNTY = ?
+        GROUP BY school.COUNTY, school.CATEGORY'''
+>>>>>>> 16f2bab8d60865fee574f79a3e037715c4b61669
 
     data = c.execute(query,[COUNTY]).fetchall()
     school_dict=[]

@@ -1,20 +1,28 @@
 body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
 }
-#map-container,
+#map
   body,
   html {
+    display: inline-block;
     height: 90%;
     width: 100%;
   }
 
 #map {
+  display: inline-block;
     height: 100%;
-    width: 50%;
+    width: 80%;
+    
   }
 .box {
   background-color: darkkhaki;
   padding: 1em;
   border: 1px solid #cccc99;
   border-radius: 10px;
+}
+#ALL-plots {
+  display: inline-block;
+  width: 40%;
+
 }

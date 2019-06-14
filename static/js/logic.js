@@ -14,17 +14,17 @@ ALSO need to make sure unselect works right*/
 
 // GRETEL - MAKE THIS PLAY WELL WITH LEAFLET CODE
 // Grab a reference to the dropdown select county
-var selector = d3.select("#selCounty");
+// var selector = d3.select("#selCounty");
 
-// // Use the list of sample names to populate the select options
-d3.json("/counties").then((countyNames) => {
-  countyNames.forEach((county) => {
-    selector
-      .append("option")
-      .text(county)
-      .property("value", county);
-  });
-});
+// // // Use the list of sample names to populate the select options
+// d3.json("/counties").then((countyNames) => {
+//   countyNames.forEach((county) => {
+//     selector
+//       .append("option")
+//       .text(county)
+//       .property("value", county);
+//   });
+// });
 
 /// THIS IS WHERE THE BIG MESS BEGINS:
 
@@ -98,7 +98,7 @@ function onEachFeature(feature, layer) {
 function highlightFeature(e) {
     var layer = e.target;
     layer.setStyle(stylelayer.highlight);
-    info.update(layer.feature.properties);
+    // info.update(layer.feature.properties);
 }
 
 // // Takes away the highlight
@@ -128,7 +128,7 @@ function zoomToFeature(e) {
         addBounds(layer)
     }
     map.fitBounds(arrayBounds);
-    detailsselected.update(featuresSelected)
+    // detailsselected.update(featuresSelected)
 }
 // // ABSOLUTELY NO IDEA HOW THIS WORKS
 var corner1 = L.latLng(53.62, 2.931),
@@ -179,22 +179,22 @@ function checkExistsLayers(feature) {
 }
 
 // /*show info layers*/
-var info = L.control({
-  position: 'bottomleft'
-});
+// var info = L.control({
+//   position: 'bottomleft'
+// });
 
-info.onAdd = function(map) {
-  this._div = L.DomUtil.create('div', 'info');
-  this.update();
-  return this._div;
-};
+// info.onAdd = function(map) {
+//   this._div = L.DomUtil.create('div', 'info');
+//   this.update();
+//   return this._div;
+// };
 
 // // WE WANT TO DO SOMETHING ELSE WITH INFO HERE
 // // GO BACK TO NOTES ABOVE 
-info.update = function(properties) {
-  this._div.innerHTML =`<h4>${properties.COUNTY_LABEL}</h4>` 
-};
+// info.update = function(properties) {
+//   this._div.innerHTML =`<h4>${properties.COUNTY_LABEL}</h4>` 
+// };
 
-info.addTo(map);
+// info.addTo(map);
 
 
