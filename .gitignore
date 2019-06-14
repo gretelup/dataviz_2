@@ -1,2 +1,8 @@
-.ipynb_checkpoints
+# Don't track content of these folders
+__pycache__/clean.cpython-37.pyc
 
+# Don't track files with these extensions
+
+*.ipynb_checkpoints
+*.db
+*.DS_store

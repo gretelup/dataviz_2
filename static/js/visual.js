@@ -45,7 +45,16 @@ function schoolCountyPlot(county) {
 });
 }
 
-function schoolNJPlot() {
+// TO TEST:
+// CHANGE test to various counties (note all caps)
+var test = "MORRIS"
+// schoolCountyPlot(test);
+
+
+// ARJUN/SMITA - WHOEVER IS WORKING ON THIS: WE MAY NEED TO
+// ADD A COUNTY PARAMETER SO WE CAN HIGHLIGHT IT WHEN SELECTED
+// ALSO NEED TO INCLUDE COUNTY IN SCHOOL STATE PATH
+function schoolNJPlot(county) {
 
   /**
   /* Builds chart for school data for all of NJ
@@ -58,6 +67,11 @@ function schoolNJPlot() {
   d3.json(url).then(function (schoolData) {
 
     // Unpack and/or futz with data
+
+    // NOTE - WE NEED TO ADD COUNTY TO PATH AND HIGHLIGHT SELECTED COUNTY
+    // NOTE - THE INITIAL BUILD WILL HAVE NO COUNTY SO NEED IF STATEMENT
+    // LIKE IF COUNTY = "NONSENSE", HIGHLIGHT NOTHING.
+    // ELSE, HIGHLIGHT COUNTY
 
     // Create trace
     var trace = {
@@ -72,6 +86,12 @@ function schoolNJPlot() {
     Plotly.newPlot("state-school-plot", data, layout);
   });
 }
+
+// TO TEST:
+// CHANGE test to various counties (note all caps)
+var test = "MORRIS"
+// schoolNJPlot(test);
+
 
 function hospitalCountyPlot(county) {
 
@@ -97,14 +117,20 @@ function hospitalCountyPlot(county) {
     
     // Create layout
     var layout = {
-      height: ,
-      width: 
+      height: x,
+      width: y
     };
     
     // Generate new plot
     Plotly.newPlot("county-hospital-plot", data, layout);
   });
 }
+
+// TO TEST:
+// CHANGE test to various counties (note all caps)
+var test = "MORRIS"
+// hospitalCountyPlot(test);
+
 
 function hospitalNJPlot() {
 
@@ -133,6 +159,11 @@ function hospitalNJPlot() {
     Plotly.newPlot("state-hospital-plot", data, layout);
   });
 }
+
+// TO TEST:
+// Note - no parameter
+// hospitalNJPlot();
+
 
 // TO DO: THIS IS VERY ROUGH
 
