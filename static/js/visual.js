@@ -1,7 +1,7 @@
 // Define four main functions that create our visualizations
 // These functions will be called inside of logic.js 
 
-function schoolCountyPlot(county) {
+function schoolCountyPlot(county, plot_id) {
 
   /**
   /* Builds chart for school data for given county
@@ -13,19 +13,25 @@ function schoolCountyPlot(county) {
 
   // Fetch school data for the county
   d3.json(url).then(function (schoolData) {
+    
+    // unpack jSON
+    var math_avg = schoolData[0].math_avg;
+    var eng_avg = schoolData[0].eng_avg;
+    var math_state_avg = schoolData[0].math_state_avg;
+    var eng_state_avg = schoolData[0].eng_state_avg;
 
     //Group bar chart for SAT scores
     // Create trace
     var trace1 = {
-      x: [math_avg,math_state_avg ],
-      y: ['COUNTY'],
+      x: [county ],
+      y: [math_avg,],
       name: 'School AVG MATHSAT Scores in Counties',
       type: 'bar'
     };
 
     var trace2 = {
-      x: [eng_avg, eng_state_avg],
-      y: ['COUNTY'],
+      x: [county],
+      y: [eng_avg, ],
       name: 'School AVG ENGLISH SAT Scores in Counties',
       type: 'bar'
     };
@@ -35,20 +41,19 @@ function schoolCountyPlot(county) {
 
   var layout = { barmode: 'group' };
 
-  // Create data
-  var data = [trace];
-  // Create layout
-  var layout = {
-  };
   // Generate new plot
-  Plotly.newPlot("county-school-plot", data, layout);
+  Plotly.newPlot(plot_id, data, layout);
 });
 }
 
 // TO TEST:
 // CHANGE test to various counties (note all caps)
 var test = "MORRIS"
-// schoolCountyPlot(test);
+schoolCountyPlot(test, "plot1");
+schoolCountyPlot(test, "plot2");
+
+// schoolCountyPlot(test, "plot3");
+// schoolCountyPlot(test, "plot4");
 
 
 // ARJUN/SMITA - WHOEVER IS WORKING ON THIS: WE MAY NEED TO
