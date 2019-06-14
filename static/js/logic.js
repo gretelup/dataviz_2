@@ -13,30 +13,15 @@
       at e._handleDOMEvent (leaflet.js:5)
       at HTMLDivElement.r (leaflet.js:5)
       
+  // GRETEL - FIX ZOOM
     
 */
-  
-
-
 
 // COMMENT THIS OUT UNTIL PLOTS ARE BUILT
 // MIGHT NEED TO PASS IN PARAMETER FOR THESE OR CREATE A DIFFERENT FUNCTION FOR INITIAL BUILD
 // Create school and hospital plots for NJ
 // schoolNJPlot();
 // hospitalNJPlot();
-
-// GRETEL - NOTHING SHOULD BE SELECTED AT FIRST
-// Use the list of sample names to populate the select options
-var selector = d3.select("#selCounty");
-
-d3.json("/counties").then((countyNames) => {
-  countyNames.forEach((county) => {
-    selector
-      .append("option")
-      .text(county)
-      .property("value", county);
-  });
-});
 
 // Set style for layers
 var stylelayer = {
@@ -69,10 +54,22 @@ var stylelayer = {
 
 }
 
-// Create map object and add layer
-var map = L.map("map", {
+// GRETEL - NOTHING SHOULD BE SELECTED AT FIRST
+// Use the list of sample names to populate the select options
+var selector = d3.select("#selCounty");
+
+d3.json("/counties").then((countyNames) => {
+  countyNames.forEach((county) => {
+    selector
+      .append("option")
+      .text(county)
+      .property("value", county);
+  });
+});
+
+map = L.map("map", {
   center: [40.0583, -74.4057],
-  zoom: 8
+  zoom: 8,
 });
 
 L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={accessToken}", {
@@ -82,15 +79,44 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
   accessToken: API_KEY
 }).addTo(map);
 
-// Add county layers with default styling
-var geojson = L.geoJson(countiesData, {
-  style: stylelayer.default,
-  onEachFeature: onEachFeature
-}).addTo(map);
+queryUrl = "/counties/location"
+$.get(queryUrl, function (data) {
+  L.geoJson(data, {
+    style: stylelayer.default,
+    onEachFeature: onEachFeature
+  }).addTo(map);
+});
 
-// COMMENT FROM LINE 69 TO END FOR TESTING PURPOSES
+function optionChanged(county) {
+  console.log(`I changed the option to ${county}`);
+  $.get(queryUrl, function (response) {
+    console.log("in the query")
+    for (var i = 0; i < response.length; i++) {
+      var d_county = response[i].properties.COUNTY;
+      console.log(d_county);
+      if (d_county == county) {
+        feature = response[i];
+      }
+    }
+  }, "json");
+  // if (dataCounty == county) {
+  //   feature = data;
+  // }
+  // console.log(feature);
+  // zoomToFeature(feature);
+}
+
+
+// $.get(queryUrl, function(data){
+//   L.geoJson(data, {
+//   })
+// })
+// Fetch new data each time a new sample is selected
+// find hte json object with feature.properties.COUNTY = county
+// e is the highest level of json I think
+// zoomToFeature(e)
+
 // Define mouse commands
-// WHAT ARE WE DOING WITH FEATURE HERE?
 function onEachFeature(feature, layer) {
   layer.on({
     mouseover: highlightFeature,
@@ -106,11 +132,10 @@ function highlightFeature(e) {
   layer.setStyle(stylelayer.highlight);
 }
 
-// GRETEL - FIX THIS NOTE checkExistsLayers function
+
 // Removes highlight styling from county 
 function resetHighlight(e) {
   var layer = e.target;
-  var feature = e.target.feature;
 
   if (layer.style == stylelayer.default) {
     setStyleLayer(layer, stylelayer.highlight);
@@ -120,8 +145,7 @@ function resetHighlight(e) {
   }
 }
 
-
-
+// GRETEL - CONSIDER UNZOOMING WHEN UNSELECTING
 var selectedFeature = "nonsense";
 var selectedLayer = "nonsense";
 var selectedCounty = "nonsense";
@@ -137,8 +161,9 @@ function zoomToFeature(e) {
     selectedCounty = "nonsense"
     // Gretel: consider adding code here to get rid of plot & CHANGE SELECTOR
     setStyleLayer(layer, stylelayer.default);
+    // GRETEL: CONSIDER DOING A CHANGE BOUNDS TO ORIGINAL HERE
     removeBounds(layer);
-  } 
+  }
   else {
     if (selectedFeature != "nonsense") {
       setStyleLayer(selectedLayer, stylelayer.default);
@@ -149,6 +174,7 @@ function zoomToFeature(e) {
     selectedFeature = feature;
     selectedLayer = layer;
     selectedCounty = county;
+    printCounty(county);
     // schoolCountyPlot(county);
     // schoolNJPlot(county);
     // hospitalCountyPlot(county);

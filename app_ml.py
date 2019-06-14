@@ -29,6 +29,9 @@ school_json = json.load(school_file)
 hospital_file = open(os.path.join("Resources", "hospitals.geojson"))
 hospital_json = json.load(hospital_file)
 
+# Set variable for county geojson to be passed in route
+county_file = open(os.path.join("Resources", "counties.geojson"))
+county_json = json.load(county_file)
 # Clean data and import into database
 # clean_geojson_hospital()
 clean_geojson_school()
@@ -44,6 +47,14 @@ def index():
     
     # PUT CODE HERE
     return render_template("index.html")
+
+
+@app.route("/counties/location")
+def counties_locations():
+    """Returns geojson of counties for NJ"""
+    
+    # PUT CODE HERE
+    return jsonify(county_json)
 
 
 @app.route('/counties')
