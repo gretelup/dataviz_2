@@ -55,9 +55,14 @@ def counties():
     c = conn.cursor()
 
     data = c.execute('SELECT DISTINCT COUNTY FROM hospitals').fetchall()
+    # county_dict=[]
+    # for d in data:
+    #     dict={"county":d[0]}
+    #     county_dict.append(dict)
     #Returns 21 county
     conn.commit()
     conn.close()
+    # return jsonify(county_dict)
     return jsonify(data)
 
 # SMITA / MIKE - CAN WE GET THIS TO RETURN A DICTIONARY LIKE OBJECT INSTEAD?
@@ -70,18 +75,23 @@ def school_county(COUNTY):
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
 
-    query='''SELECT SCHOOL.COUNTY county, SCHOOL.CATEGORY category,
+    query='''SELECT SCHOOL.COUNTY county,
         ROUND(AVG(TEST.MATH_SCH_AVG), 2) math_avg, ROUND(AVG(TEST.ENG_SCH_AVG), 2) eng_avg,
         ROUND(AVG(TEST.MATH_STATE_AVG), 2) math_state_avg, ROUND(AVG(TEST.ENG_STATE_AVG), 2) eng_state_avg
         FROM SCHOOL
         JOIN TEST ON TEST.DS_CODE=SCHOOL.DS_CODE
         WHERE SCHOOL.COUNTY = ?
-        GROUP BY SCHOOL.COUNTY, SCHOOL.CATEGORY'''
+        GROUP BY SCHOOL.COUNTY'''
 
     data = c.execute(query,[COUNTY]).fetchall()
+    school_dict=[]
+    for d in data:
+        dict={"county":d[0],"math_avg":d[1],"eng_avg":d[2],"math_state_avg":d[3],
+        "eng_state_avg":d[4]}
+        school_dict.append(dict)
     conn.commit()
     conn.close()
-    return jsonify(data)
+    return jsonify(school_dict)
 
 # Again, any way to get a dictionary like object?
 @app.route('/hospital/counties/<COUNTY>')
@@ -95,9 +105,13 @@ def hospital_county(COUNTY):
         JOIN zip Z
         WHERE H.zip=Z.zip AND COUNTY = ?'''
     data = c.execute(query2,[COUNTY]).fetchall()
+    hospitals_dict=[]
+    for d in data:
+        dict={"name":d[0],"city":d[1],"zip":d[2],"county":d[3],"rate":d[4],"care_eff":d[5],"lat":d[6],"lng":d[7]}
+        hospitals_dict.append(dict)
     conn.commit()
     conn.close()
-    return jsonify(data)
+    return jsonify(hospitals_dict)
 
 # AGAIN, CAN WE GET A DICTIONARY LIKE OBJECT?
 @app.route('/school/state')
@@ -110,9 +124,14 @@ def school_state():
     query_s='''SELECT MATH_SCH_AVG,MATH_STATE_AVG,ENG_SCH_AVG,ENG_STATE_AVG
         FROM test T'''
     data=c.execute(query_s).fetchall()
+    test_dict=[]
+    for d in data:
+        dict={"math_sch_avg":d[0],"math_state_avg":d[1],"eng_sch_avg":d[2],"eng_state_avg":d[3]}
+        test_dict.append(dict)
+    
     conn.commit()
     conn.close()
-    return jsonify(data)
+    return jsonify(test_dict)
 
 #Again, dictionary type object?
 @app.route('/hospital/state')
@@ -129,9 +148,14 @@ def hospital_state():
         FROM hospitals
         GROUP BY COUNTY'''
     data=c.execute(query_h).fetchall()
+    hosp_county_dict=[]
+    for d in data:
+        dict={"county":d[0],"avg_rate":d[1]}
+        hosp_county_dict.append(dict)
+    
     conn.commit()
     conn.close()
-    return jsonify(data)
+    return jsonify(hosp_county_dict)
 
 # REVISIT THIS LATER
 # @app.route('/school/cities/<CITY>')
