@@ -1,10 +1,108 @@
 import sqlite3
 import pandas as pd
 import os
+import json
+
+
+def clean_geojson_hospital():
+    """Extracts location data from geojson for hospitals.
+    Enters data into SQL database"""
+
+
+    hospital_file = open(os.path.join("Resources", "Hospitals.geojson"))
+    hospital_json = json.load(hospital_file)
+    hospital_file.close()
+
+    conn = sqlite3.connect('nj_db.db')
+    c = conn.cursor()
+    c.execute('DROP TABLE IF EXISTS hospital;')
+    c.execute("""CREATE TABLE "hospital" (
+        "NAME"      TEXT,
+        "TYPE"      TEXT,
+        "COUNTY"	TEXT,
+        "CITY"	TEXT,
+        "LATITUDE"  NUMERIC,
+        "LONGITUDE" NUMERIC,
+        "ADDRESS"   TEXT
+    )""")
+
+    rows = []
+    for f in hospital_json['features']:
+        row = []
+        row.append(f['properties']['NAME'])
+        row.append(f['properties']['TYPE'])
+        row.append(f['properties']['COUNTY'])
+        row.append(f['properties']['CITY'])
+        row.append(f['properties']['LATITUDE'])
+        row.append(f['properties']['LONGITUDE'])
+        row.append(f['properties']['ADDRESS'])
+
+        rows.append(tuple(row))
+
+    c.executemany('INSERT INTO hospital VALUES (?,?,?,?,?,?,?)', rows)
+    conn.commit()
+    conn.close()
+
+
+def clean_geojson_school():
+    """Extracts location data from geojson for schools.
+    Enters data into SQL database"""
+
+
+    school_file = open(os.path.join("Resources", "school.geojson"))
+    school_json = json.load(school_file)
+    school_file.close()
+
+    conn = sqlite3.connect('nj_db.db')
+    c = conn.cursor()
+    c.execute('DROP TABLE IF EXISTS school;')
+    c.execute('''CREATE TABLE "school" (
+        "SCHOOLNAME"	TEXT,
+        "ADDRESS1"	TEXT,
+        "UTM_X"	INTEGER,
+        "UTM_Y"	INTEGER,
+        "COUNTY"	TEXT,
+        "CITY"	TEXT,
+        "STATE"	TEXT,
+        "CATEGORY"	TEXT,
+        "SCHOOLTYPE"	TEXT,
+        "DIST_CODE"    TEXT,
+        "SCHOOLCODE"    TEXT,
+        "DS_CODE"       TEXT,
+        "LATITUDE"      DECIMAL,
+        "LONGITUDE"     DECIMAL,
+        "ZIP"           TEXT
+    )''')
+
+    rows = []
+    for f in school_json['features']:
+        row = []
+        row.append(f['properties']['SCHOOLNAME'])
+        row.append(f['properties']['ADDRESS1'])
+        row.append((f['properties']['X']))
+        row.append((f['properties']['Y']))
+        row.append(f['properties']['COUNTY'])
+        row.append(f['properties']['CITY'])
+        row.append(f['properties']['STATE'])
+        row.append(f['properties']['CATEGORY'])
+        row.append(f['properties']['SCHOOLTYPE'])
+        row.append(f['properties']['DIST_CODE'])
+        row.append(f['properties']['SCHOOLCODE'])
+        row.append(f['properties']['DIST_CODE']+"-"+(f['properties']['SCHOOLCODE']))
+        row.append(f['geometry']['coordinates'][0])
+        row.append(f['geometry']['coordinates'][1])
+        row.append(f['properties']['ZIP_TRUNC'])
+        rows.append(tuple(row)) 
+
+    c.executemany('INSERT INTO school VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)', rows)
+    conn.commit()
+    conn.close()
+
 
 def clean_school():
     """Extracts and cleans school review data.
     Enters data into SQL database"""
+
 
     # Import CSV and convert to dataframes
     test_df = pd.read_csv(os.path.join("Resources", "school_test.csv"))
@@ -66,6 +164,7 @@ def clean_school():
 def clean_income_zip():
     """Extracts and cleans income and zipcode data.
     Enters data into SQL database"""
+
 
     # Import CSV and convert to dataframes
     IncomeZip_df = pd.read_csv(os.path.join("Resources", "income_zip.csv"))
@@ -132,6 +231,7 @@ def clean_income_zip():
 def clean_hospital():
     """Extracts and cleans income data.
     Enters data into SQL database"""
+
 
     # Import CSV and convert to dataframes
     hospital_df = pd.read_csv(os.path.join("Resources", "Hospital_General_Information.csv"))

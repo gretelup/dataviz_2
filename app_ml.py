@@ -1,26 +1,23 @@
-# BIG TO DO: ADD ROUTES FOR INCOME IF WE DECIDE TO INCLUDE THAT
-# IF WE DO, NEED TO UPDATE BOTH JS AS WELL
-# IF WE DO NOT, ADJUST CLEAN SCRIPT APPROPRIATELY
-# IF WE DECIDE NOT TO INCLUDE CITIES, GET RID OF THAT CODE
-
 # Import dependencies
 import json
 import sqlite3
 import pandas as pd
 import os
-
 from flask import (
     Flask,
     render_template,
     jsonify,
     request,
     make_response)
-
 from clean import (
+    clean_geojson_hospital,
+    clean_geojson_school,
     clean_school,
     clean_income_zip,
     clean_hospital)
 
+
+# Set up Flask
 app = Flask(__name__)
 
 # Create database
@@ -32,7 +29,9 @@ school_json = json.load(school_file)
 hospital_file = open(os.path.join("Resources", "hospitals.geojson"))
 hospital_json = json.load(hospital_file)
 
-# Clean school, income, zip code, and hospital data into database
+# Clean data and import into database
+clean_geojson_hospital()
+clean_geojson_school()
 clean_school()
 clean_income_zip()
 clean_hospital()
@@ -65,8 +64,7 @@ def counties():
     # return jsonify(county_dict)
     return jsonify(data)
 
-# SMITA / MIKE - CAN WE GET THIS TO RETURN A DICTIONARY LIKE OBJECT INSTEAD?
-# E.G., {county: MORRIS, type: Public, "avg_math: 588.11", etc}???
+
 @app.route('/school/counties/<COUNTY>')
 def school_county(COUNTY):
     """Returns jsonified list of average SAT scores for county and state"""
@@ -93,10 +91,12 @@ def school_county(COUNTY):
     conn.close()
     return jsonify(school_dict)
 
-# Again, any way to get a dictionary like object?
+
 @app.route('/hospital/counties/<COUNTY>')
 def hospital_county(COUNTY):
-    """DESCRIBE WHAT THIS DOES"""
+    """Returns jsonified list of rating informatin for hospitals
+    in specified county"""
+
 
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
@@ -113,7 +113,8 @@ def hospital_county(COUNTY):
     conn.close()
     return jsonify(hospitals_dict)
 
-# AGAIN, CAN WE GET A DICTIONARY LIKE OBJECT?
+
+# SMITA/MIKE - WE NEED TO INCLUDE COUNTY IN THIS REQUIRES JOIN
 @app.route('/school/state')
 def school_state():
     """Returns jsonified list of average SAT scores for state """
@@ -133,16 +134,15 @@ def school_state():
     conn.close()
     return jsonify(test_dict)
 
-#Again, dictionary type object?
+
 @app.route('/hospital/state')
 def hospital_state():
-    """DESCRIBE WHAT THIS DOES"""
+    """Returned jsonified list of hospitals and ratings
+    for state"""
 
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
     
-    # HERE'S WHERE THE WORK GOERS
-    # SMITA - RETURN ALL REQUIRED HOSPITAL DATA
     # data = c.execute()
     query_h='''SELECT COUNTY, ROUND(AVG(RATE), 2) avg_rate
         FROM hospitals
