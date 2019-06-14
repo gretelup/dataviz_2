@@ -1,18 +1,31 @@
+/* !!!!!!!!GRETEL ERRORS
+
+  Violation] Added non-passive event listener to a 
+  scroll-blocking 'wheel' event. Consider marking 
+  event handler as 'passive' to make the page more 
+  responsive. See https://www.chromestatus.com/feature/5745543795965952
+
+  2leaflet.js:5 Uncaught Error: Bounds are not valid.
+      at e.fitBounds (leaflet.js:5)
+      at e.zoomToFeature (logic.js:144)
+      at e.fire (leaflet.js:5)
+      at e._fireDOMEvent (leaflet.js:5)
+      at e._handleDOMEvent (leaflet.js:5)
+      at HTMLDivElement.r (leaflet.js:5)
+      
+    
+*/
+  
+
+
+
 // COMMENT THIS OUT UNTIL PLOTS ARE BUILT
 // MIGHT NEED TO PASS IN PARAMETER FOR THESE OR CREATE A DIFFERENT FUNCTION FOR INITIAL BUILD
 // Create school and hospital plots for NJ
 // schoolNJPlot();
 // hospitalNJPlot();
 
-// GRETEL - VIOLATION ERROR:
-/*Violation] Added non-passive event listener to a 
-scroll-blocking 'wheel' event. Consider marking 
-event handler as 'passive' to make the page more 
-responsive. See https://www.chromestatus.com/feature/5745543795965952
-
-// GRETEL - find where it's printing out all counties
-*/
-// GRETEL - MAKE THIS PLAY WELL WITH LEAFLET CODE
+// GRETEL - NOTHING SHOULD BE SELECTED AT FIRST
 // Use the list of sample names to populate the select options
 var selector = d3.select("#selCounty");
 
@@ -141,6 +154,7 @@ function zoomToFeature(e) {
     // hospitalCountyPlot(county);
     // CHANGE SELECTOR TO COUNTY;
   }
+  // GRETEL - THIS IS THROWING AN ERROR
   map.fitBounds(arrayBounds);
 }
 
