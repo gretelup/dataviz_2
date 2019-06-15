@@ -26,3 +26,8 @@ body {
   width: 90%;
 
 }
+#plot3,#plot4 {
+  max-height: calc(200px + 20px) !important;
+  overflow:hidden;
+}
+

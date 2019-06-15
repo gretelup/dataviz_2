@@ -106,34 +106,98 @@ function hospitalCountyPlot(county) {
 
   // Construct url for path to hospital data for selected county
   var url = `/hospital/counties/${county}`;
-
+  rate_total=0
+  counter=0
   // Fetch hospital data for the county
   d3.json(url).then(function (hospitalData) {
+    hospitalData.forEach(function(d) {
+      h_rate = +d.rate;
+      counter=counter+1;
+      rate_total=rate_total+h_rate
+    });
+  avg_h_rate=rate_total/counter;
+  // Convert avg rate to ratio to be equivalent to degrees for gauge 
+  console.log(avg_h_rate);
+  var level=avg_h_rate * 180 / 5;
+  // Trig to calculate meter point
+  var degrees = 180 - level,
+  radius = .5;
+  var radians = degrees * Math.PI / 180;
+  var x = radius * Math.cos(radians);
+  var y = radius * Math.sin(radians);        // Create gauge arrow
+  var mainPath = 'M -.0 -0.025 L .0 0.025 L ',
+      pathX = String(x),
+      space = ' ',
+      pathY = String(y),
+      pathEnd = ' Z';
+  var path = mainPath.concat(pathX,space,pathY,pathEnd);
+
+  // Construct gauge
+  var data = [{ type: 'scatter',
+  x: [0], y:[0],
+      marker: {size: 28, color:'850000'},
+      showlegend: false,
+      name: 'ratings',
+      text: avg_h_rate,
+      hoverinfo: avg_h_rate},
+  { values: [1, 1, 1, 1, 1,5],
+  rotation: 90,
+  text: ['5', '4', '3', '2', '1',"  "],
+  textinfo: 'text',
+  textposition:'inside',
+  marker: {colors:['#1db231','#5c3bc2',
+                   '#51BCF7','#ffba00', 
+                  '#e0455e','rgba(255, 255, 255, 0)']},
+  labels: ['5', '4', '3', '2', '1',"  "],
+  hoverinfo: 'label',
+  hole: .5,
+  type: 'pie',
+  showlegend: false
+  }];
+
+  var layout = {
+  shapes:[{
+      type: 'path',
+      path: path,
+      fillcolor: '850000',
+      line: {
+          color: '850000'
+      }
+      }],
+  title: '<b>Based on county</b>',
+  height: 400,
+  width: 400,
+  xaxis: {zeroline:false, showticklabels:false,
+              showgrid: false, range: [-1, 1]},
+  yaxis: {zeroline:false, showticklabels:false,
+              showgrid: false, range: [-1, 1]}
+  };
+  Plotly.newPlot("plot3", data, layout);
 
     // Unpack and/or futz with data
 
     // Create trace
-    var HospitalCountydata = [{
-      values: [],
-      labels: [, , ],
-      type: 'pie'
-    }];
+    // var HospitalCountydata = [{
+    //   values: [],
+    //   labels: [, , ],
+    //   type: 'pie'
+    // }];
     
-    // Create layout
-    var layout = {
-      height: x,
-      width: y
-    };
+    // // Create layout
+    // var layout = {
+    //   height: x,
+    //   width: y
+    // };
     
-    // Generate new plot
-    Plotly.newPlot("county-hospital-plot", data, layout);
+    // // Generate new plot
+    // Plotly.newPlot("plot3", data, layout);
   });
 }
 
 // TO TEST:
 // CHANGE test to various counties (note all caps)
 var test = "MORRIS"
-// hospitalCountyPlot(test);
+hospitalCountyPlot(test);
 
 
 function hospitalNJPlot() {
@@ -147,26 +211,88 @@ function hospitalNJPlot() {
 
   // Fetch hospital data for the county
   d3.json(url).then(function (hospitalData) {
+    hospitalData.forEach(function(d) {
+      h_rate = +d.avg_rate;
+      counter=counter+1;
+      rate_total=rate_total+h_rate
+    });
+  avg_h_rate=rate_total/counter;
+  // Convert avg rate to ratio to be equivalent to degrees for gauge 
+  console.log(avg_h_rate);
+  var level=avg_h_rate * 180 / 5;
+  // Trig to calculate meter point
+  var degrees = 180 - level,
+  radius = .5;
+  var radians = degrees * Math.PI / 180;
+  var x = radius * Math.cos(radians);
+  var y = radius * Math.sin(radians);        // Create gauge arrow
+  var mainPath = 'M -.0 -0.025 L .0 0.025 L ',
+      pathX = String(x),
+      space = ' ',
+      pathY = String(y),
+      pathEnd = ' Z';
+  var path = mainPath.concat(pathX,space,pathY,pathEnd);
 
+  // Construct gauge
+  var data = [{ type: 'scatter',
+  x: [0], y:[0],
+      marker: {size: 28, color:'850000'},
+      showlegend: false,
+      name: 'ratings',
+      text: avg_h_rate,
+      hoverinfo: avg_h_rate},
+  { values: [1, 1, 1, 1, 1,5],
+  rotation: 90,
+  text: ['5', '4', '3', '2', '1',"  "],
+  textinfo: 'text',
+  textposition:'inside',
+  marker: {colors:['#1db231','#5c3bc2',
+                   '#51BCF7','#ffba00', 
+                  '#e0455e','rgba(255, 255, 255, 0)']},
+  labels: ['5', '4', '3', '2', '1',"  "],
+  hoverinfo: 'label',
+  hole: .5,
+  type: 'pie',
+  showlegend: false
+  }];
+
+  var layout = {
+  shapes:[{
+      type: 'path',
+      path: path,
+      fillcolor: '850000',
+      line: {
+          color: '850000'
+      }
+      }],
+  title: '<b>Based on state</b>',
+  height: 400,
+  width: 400,
+  xaxis: {zeroline:false, showticklabels:false,
+              showgrid: false, range: [-1, 1]},
+  yaxis: {zeroline:false, showticklabels:false,
+              showgrid: false, range: [-1, 1]}
+  };
+  Plotly.newPlot("plot4", data, layout);
     // Unpack and/or futz with data
 
-    // Create trace
-    var trace = {
-    };
+    // // Create trace
+    // var trace = {
+    // };
 
-    // Create data
-    var data = [trace];
-    // Create layout
-    var layout = {
-    };
-    // Generate new plot
-    Plotly.newPlot("state-hospital-plot", data, layout);
+    // // Create data
+    // var data = [trace];
+    // // Create layout
+    // var layout = {
+    // };
+    // // Generate new plot
+    // Plotly.newPlot("plot4", data, layout);
   });
 }
 
 // TO TEST:
 // Note - no parameter
-// hospitalNJPlot();
+hospitalNJPlot();
 
 
 // TO DO: THIS IS VERY ROUGH
@@ -219,15 +345,7 @@ function reportCard(county) {
 
   // Fetch hospital data for the county
   d3.json(url_hospital).then(function (hospitalData) {
-
     // Unpack and/or futz with data
-
-    // Do Math
-    //  var hospMed = math...;
-    //  var hospGrade = math..;
-
-    // Fill in fields for hospital in report card
-
     d3.select("#report-card")
       .append("p")
       .classed("", true)
