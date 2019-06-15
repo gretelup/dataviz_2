@@ -13,7 +13,10 @@
     integrity="sha512-Rksm5RenBEKSKFjgI3a41vrjkw4EVPlJ3+OiI65vTjIdo9brlAacEuKOiQ5OFh7cOI1bkDwLqdLw3Zg0cRJAAQ=="
     crossorigin="" />
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="/dist/bar.chart.min.css" />
   <link rel="stylesheet" href="../static/css/style.css" />
+
+
 
 </head>
 
@@ -45,15 +48,9 @@
         </div>
         <div class="card">
           <div class="card-body">
-            <h4 class="card-title">Average Hospital Rating for County</h4>
+            <h4 class="card-title">Average Hospital Rating </h4>
+            <div id="plot"><div id="plot3"></div><div id="plot4"></div></div>
           </div>
-          <div id="plot3"></div>
-        </div>
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">Average Hospital Rating for State</h4>
-          </div>
-          <div id="plot4"></div>
         </div>
         <div class="card">
           <div class="card-body">
@@ -73,10 +70,12 @@
     crossorigin=""></script>
   <script src="../static/js/jquery-3.4.1.min.js"></script>
   <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="/dist/jquery.bar.chart.min.js"></script>
   <script src="../static/js/logic.js"></script>
   <script scr="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
   <script src="../static/js/visual.js"></script>
+
 
 </body>
 
