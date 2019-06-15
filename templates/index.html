@@ -15,83 +15,68 @@
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
   <link rel="stylesheet" href="../static/css/style.css" />
 
-
-
-
 </head>
 
 <body>
   <h1 style="text-align:center;" style="font-size:80px;">The Lovely Garden State</h1>
-  <div class="row" style="height: 600px">
-    <div class="col">
+  <div class="row" style="height: 650px">
+    <div class="col-4">
       <div id="map" style="text-align:center;"
         style="width: 200px; height: 400px; border: 1px solid #AAA; position:relative;">
       </div>
     </div>
 
     <!-- SCHOOL & HOSPITAL PLOTS -->
-
-    <div id="ALL-plots" style="text-align:center;">
-      <div class="container mt-5">
-        <div class="col">
-          <div class="card">
-            <div class="card-body">
-              <h2 class="card-title" style="text-align:center;">Plot #1</h2>
-              <p>Here is a plot of the schools in the selected County</p>
-              <div id="plot1"></div>
-            </div>
+    <div class="col-8" style="text-align:center;">
+      <!-- <select id="selCounty" onchange="optionChanged(this.value)"></select> -->
+      <h2 style="text-align:center;" id="selectedCounty"></h2>
+      <div id="ALL-plots">
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Average SAT Score: County v. NJ</h4>
           </div>
+          <div id="plot1"></div>
         </div>
-        <div class="col">
-          <div class="card">
-            <div class="card-body">
-              <h2 class="card-title" style="text-align:center;">Plot #2</h2>
-              <p>Here is a plot of the schools in the selected County</p>
-              <div id="plot2"></div>
-            </div>
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Average SAT Across NJ</h4>
           </div>
+          <div id="plot2"></div>
         </div>
-        <div class="col">
-          <div class="card">
-            <div class="card-body">
-              <h2 class="card-title" style="text-align:center;">Plot #3</h2>
-              <p>Here is a plot of the Hospitals in the selected County</p>
-              <div id="plot3"></div>
-            </div>
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Average Hospital Rating for County</h4>
           </div>
+          <div id="plot3"></div>
         </div>
-        <div class="col">
-          <div class="card">
-            <div class="card-body">
-              <h2 class="card-title" style="text-align:center;">Plot #4</h2>
-              <p>Here is a plot of the Hospitals in the selected County</p>
-              <div id="plot4"></div>
-            </div>
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">Average Hospital Rating for State</h4>
           </div>
+          <div id="plot4"></div>
         </div>
-      </div>
-      <!-- DROPDOWN -->
-      <div class="col">
-        <!-- NEED TO ADD WHAT TO DO WHEN NEW COUNTY IS SELECTED
-        ALSO NEED TO CHANGE THE SELECTED COUNTY WITH WHAT IS SELECTED ON MAP
-       MAYBE MAKE THE INITIAL OPTION NONE; I KNOW I'VE SEEN THIS SOMEWHERE
-      LOOK AT BELLY BUTTON CODE-->
-        <select id="selCounty" onchange="optionChanged(this.value)"></select>
+        <div class="card">
+          <div class="card-body">
+            <h4 class="card-title">State Report Card</h4>
+          </div>
+          <div id="report-card"></div>
+        </div>
       </div>
     </div>
-    <!-- API key -->
-    <script src="../static/js/config.js"></script>
+  </div>
+  <!-- API key -->
+  <script src="../static/js/config.js"></script>
 
-    <!-- JS -->
-    <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
-      integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
-      crossorigin=""></script>
-    <script src="../static/js/jquery-3.4.1.min.js"></script>
-    <script src="https://d3js.org/d3.v5.min.js"></script>
-    <script src="../static/js/logic.js"></script>
-    <script scr="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
-    <script src="../static/js/visual.js"></script>
+  <!-- JS -->
+  <script src="https://unpkg.com/leaflet@1.3.3/dist/leaflet.js"
+    integrity="sha512-tAGcCfR4Sc5ZP5ZoVz0quoZDYX5aCtEm/eu1KhSLj2c9eFrylXZknQYmxUssFaVJKvvc0dJQixhGjG2yXWiV9Q=="
+    crossorigin=""></script>
+  <script src="../static/js/jquery-3.4.1.min.js"></script>
+  <script src="https://d3js.org/d3.v5.min.js"></script>
+  <script src="../static/js/logic.js"></script>
+  <script scr="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+  <script src="../static/js/visual.js"></script>
 
 </body>
 
