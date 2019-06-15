@@ -46,19 +46,7 @@ function schoolCountyPlot(county) {
 });
 }
 
-// TO TEST:
-// CHANGE test to various counties (note all caps)
-// var test = "MORRIS"
-// schoolCountyPlot(test, "plot1");
-
-// schoolCountyPlot(test, "plot3");
-// schoolCountyPlot(test, "plot4");
-
-
-// ARJUN/SMITA - WHOEVER IS WORKING ON THIS: WE MAY NEED TO
-// ADD A COUNTY PARAMETER SO WE CAN HIGHLIGHT IT WHEN SELECTED
-// ALSO NEED TO INCLUDE COUNTY IN SCHOOL STATE PATH
-function schoolNJPlot(county) {
+function schoolNJPlot() {
 
   /**
   /* Builds chart for school data for all of NJ
@@ -70,32 +58,56 @@ function schoolNJPlot(county) {
   // Fetch school data for state
   d3.json(url).then(function (schoolData) {
 
-    // Unpack and/or futz with data
+      // Cast data as integers
+      schoolData.forEach(function (d) {
+          d.sat_avg = +d.sat_avg;
+      });
 
-    // NOTE - WE NEED TO ADD COUNTY TO PATH AND HIGHLIGHT SELECTED COUNTY
-    // NOTE - THE INITIAL BUILD WILL HAVE NO COUNTY SO NEED IF STATEMENT
-    // LIKE IF COUNTY = "NONSENSE", HIGHLIGHT NOTHING.
-    // ELSE, HIGHLIGHT COUNTY
-
-    // Create trace
-    var trace = {
-    };
-
-    // Create data
-    var data = [trace];
-    // Create layout
-    var layout = {
-    };
-    // Generate new plot
-    Plotly.newPlot("state-school-plot", data, layout);
+      $('#plot2').animatedBarChart({
+          data: schoolData,
+          params: {
+              name: 'County', // name for xaxis
+              value: 'Average SAT Score' // value for yaxis
+          },
+          chart_height: 400,
+          horizontal_bars: false,
+          colors: null,
+          show_legend: false,
+          x_grid_lines: true,
+          y_grid_lines: true,
+          // speed for tranistions
+          tweenDuration: 300,
+          bars: {
+              padding: 0.075, // padding between bars
+              opacity: 0.7, // default bar opacity
+              opacity_hover: 0.45, // default bar opacity on mouse hover
+              disable_hover: false, // disable animation and legend on hover
+              hover_name_text: 'county', // text for name column for label displayed on bar hover
+              hover_value_text: 'sat_avg', // text for value column for label displayed on bar hover
+          },
+          // margins for chart rendering
+          margin: {
+              top: 0, // top margin
+              right: 35, // right margin
+              bottom: 20, // bottom margin
+              left: 70 // left margin
+          },
+          // rotate xaxis label params
+          rotate_x_axis_labels: {
+              process: true, // process xaxis label rotation
+              minimun_resolution: 720, // minimun_resolution for label rotating
+              bottom_margin: 15, // bottom margin for label rotation
+              rotating_angle: 90, // angle for rotation,
+              x_position: 9, // label x position after rotation
+              y_position: -3 // label y position after rotation
+          }
+      });
   });
 }
 
 // TO TEST:
-// CHANGE test to various counties (note all caps)
-var test = "MORRIS"
-// schoolNJPlot(test);
 
+// schoolNJPlot();
 
 function hospitalCountyPlot(county) {
 
@@ -193,11 +205,6 @@ function hospitalCountyPlot(county) {
     // Plotly.newPlot("plot3", data, layout);
   });
 }
-
-// TO TEST:
-// CHANGE test to various counties (note all caps)
-// var test = "MORRIS"
-// hospitalCountyPlot(test);
 
 
 function hospitalNJPlot() {
