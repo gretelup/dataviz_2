@@ -1,7 +1,7 @@
 // Define four main functions that create our visualizations
 // These functions will be called inside of logic.js 
 
-function schoolCountyPlot(county, plot_id) {
+function schoolCountyPlot(county) {
 
   /**
   /* Builds chart for school data for given county
@@ -42,7 +42,7 @@ function schoolCountyPlot(county, plot_id) {
   var layout = { barmode: 'group' };
 
   // Generate new plot
-  Plotly.newPlot(plot_id, data, layout);
+  Plotly.newPlot("plot1", data, layout);
 });
 }
 
@@ -196,8 +196,8 @@ function hospitalCountyPlot(county) {
 
 // TO TEST:
 // CHANGE test to various counties (note all caps)
-var test = "MORRIS"
-hospitalCountyPlot(test);
+// var test = "MORRIS"
+// hospitalCountyPlot(test);
 
 
 function hospitalNJPlot() {
@@ -289,11 +289,6 @@ function hospitalNJPlot() {
     // Plotly.newPlot("plot4", data, layout);
   });
 }
-
-// TO TEST:
-// Note - no parameter
-hospitalNJPlot();
-
 
 // TO DO: THIS IS VERY ROUGH
 
