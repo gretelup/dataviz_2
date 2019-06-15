@@ -1,5 +1,3 @@
-// "county":county,"sat_avg":sat_avg}
-
 function schoolNJPlot() {
 
     /**
@@ -9,11 +7,10 @@ function schoolNJPlot() {
     // Construct url for path to school data for state
     var url = `/school/state`;
 
-
     // Fetch school data for state
     d3.json(url).then(function (schoolData) {
 
-        // testArray = [{county: county, sat_avg: sat_avg}]
+        // Cast data as integers
         schoolData.forEach(function (d) {
             d.sat_avg = +d.sat_avg;
         });
@@ -61,6 +58,10 @@ function schoolNJPlot() {
 }
 
 var test = "MORRIS"
+
+
+
+
 // schoolNJPlot(test);
 
 
