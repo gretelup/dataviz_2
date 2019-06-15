@@ -18,13 +18,12 @@ A friend is looking for a place to live in New Jersey and would find it useful t
 ## Sources
 
 * Hospital Rating Data from [Medicare](https://data.medicare.gov/Hospital-Compare/Hospital-General-Information/xubh-q36u)
-  * Hospital location and ratings data
-  * Includes a list of all hospitals that have been registered with Medicare. The list includes addresses, phone numbers, hospital type, and overall hospital ratings
+  * Includes a list of all hospitals that have been registered with Medicare. The list includes     name,city,zip,county,care effectivness and overall hospital ratings
 
-* New Jersey School Performance Reports from [New Jersey Department of Education](https://rc.doe.state.nj.us/ReportsDatabase.aspx)
+<!-- * New Jersey School Performance Reports from [New Jersey Department of Education](https://rc.doe.state.nj.us/ReportsDatabase.aspx)
   * Performance data for schools administered by NJ Department of Education. Metrics include:
     * Student to teacher ratio by school
-    * Standardized test scores by school
+    * Standardized test scores by school -->
 
 * School Location Data from [State of New Jersey - GIS Open Data](https://njogis-newjersey.opendata.arcgis.com/datasets/d8223610010a4c3887cfb88b904545ff_4)
   * This data features information consisting of point locations of public, private, and charter schools including grades Kindergarten to Grade 12, adult and vocational schools in New Jersey, that are regulated by the New Jersey Department of Education.
@@ -80,6 +79,7 @@ A friend is looking for a place to live in New Jersey and would find it useful t
   * logic.js: File that extracts geojson data and maps it; also integrates data from the other sources and maps them as well.
   * config.js: stores the API key
   * jQuery-3.4.1.mn.js: used to render the animated bar chart and for the NJ map interactions
+    https://www.jqueryscript.net/chart-graph/bar-column-chart-d3.html Gretel
   * Visial.js: is used to create our plots and display on the webpage 
 
   Javascript Packages used:
