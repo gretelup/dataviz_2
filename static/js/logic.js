@@ -14,18 +14,6 @@ var stylelayer = {
     fillOpacity: 0.7
   }
 }
-// GRETEL - LINK SELECTOR?
-// NOTHING SHOULD BE SELECTED AT FIRST
-// Create dropdown menu
-// var selector = d3.select("#selCounty");
-// d3.json("/counties").then((countyNames) => {
-//   countyNames.forEach((county) => {
-//     selector
-//       .append("option")
-//       .text(county)
-//       .property("value", county);
-//   });
-// });
 
 // Create map object
 map = L.map("map", {
