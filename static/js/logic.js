@@ -56,9 +56,9 @@ $.get(queryUrl, function (data) {
 function createPlots(county) {
   d3.select("#selectedCounty")
     .html(`You have selected scenic <strong>${county} County!`);
-  schoolCountyPlot(county, "plot1")
-  // hospitalCountyPlot(county, "plot3");
-  // hospitalStatePlot(county, "plot4");
+  schoolCountyPlot(county)
+  hospitalCountyPlot(county);
+  hospitalNJPlot();
   // reportCard(county);
 }
 
