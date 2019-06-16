@@ -545,12 +545,9 @@ function incomeNJPlotReset() {
       .attr("fill", "blue");
   });
 }
-
-
 function reportCard(county) {
-
-  /**
-  /* Builds report card for given county
+/**
+ *  /* Builds report card for given county
   /* @param {string}    county    Name of selected county
   */
 
@@ -558,36 +555,21 @@ function reportCard(county) {
   var url_school = `/school/counties/${county}`;
 
   // Clear existing report card
-  d3.select("#report-card").html("");
+  // d3.select("#report-card").html("");
 
   // Fetch school data for the county
   d3.json(url_school).then(function (schoolData) {
 
-    // Unpack and/or futz with data
-
-    // Do some sort of mathematical something to create numbers and grade
-    // Maybe find the median math and english SAT score
-    // If it falls within a certain range, it gets an A, etc.
-    // We could also find other metrics
-
-    //  var mathMed = math using stuff from schoolData;
-    //  var engMed = math using stuff from schoolData;
-    //  var schoolGrade = math using stuff from schoolData;
-
-    // Create the fields and fill in the data
-    // Something like:
-    // p is probably not right for append
-    // you can jam html directly into this OR change css file by class
-    d3.select("#report-card")
-      .append("p")
-      .classed("", true)
-      .text(`Median Math SAT: ${mathMed}`)
-      .append("p")
-      .classed("", true)
-      .text(`Median English SAT: ${engMed}`)
-      .append("p")
-      .classed("", true)
-      .text(`School Grade: ${schoolGrade}`);
+    // Unpack data
+    var math_avg = schoolData[0].math_avg;
+    var eng_avg = schoolData[0].eng_avg;
+    var math_percent = schoolData[0].math_pctl + "%";
+    var eng_percent = schoolData[0].eng_pctl + "%";
+    
+    d3.select("#mathscr").html(math_avg)
+    d3.select("#mathpercent").html(math_percent)
+    d3.select("#engscr").html(eng_avg)
+    d3.select("#engpercent").html(eng_percent)
   });
 
   // Construct url for path to hospital data for selected county
@@ -595,24 +577,46 @@ function reportCard(county) {
 
   // Fetch hospital data for the county
   d3.json(url_hospital).then(function (hospitalData) {
-    // Unpack and/or futz with data
+    // console.log(hospitalData);
+    // Unpack data
+    var conv_rate = '?';
+    var hospRating = hospitalData["list"][0].rate;
+
+    if (hospRating >= 5){
+      conv_rate = "A";
+    }
+    else if (hospRating>=4){
+      conv_rate = "B";
+    }
+    else if (hospRating>=3){
+      conv_rate = "C";
+    }
+    else if (hospRating>=2){
+      conv_rate = "D";
+    }
+    else{
+      conv_rate = "F";
+    }
+
+    
+    //
+    d3.select("#hospitalrate").html(hospRating)
+    d3.select("#grade").html(conv_rate)
+    
+
+    // Fill in fields for hospital in report card
+
     d3.select("#report-card")
       .append("p")
       .classed("", true)
-      .text(`Median Hospital Score: ${hospMed}`)
       .append("p")
       .classed("", true)
-      .text(`Hospital Grade: ${hospGrade}`);
-  });
+      
+    });
 
-  // Do Math
-  //    var countyGrade = math...;
-
-  d3.select("#report-card")
-    .append("p")
-    .classed("", true)
-    .text(`County Grade: ${countyGrade}`)
+  
 }
+ 
 
 
 
