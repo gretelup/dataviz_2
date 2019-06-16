@@ -1,5 +1,13 @@
+h1 {
+  font-family: 'Kalam', cursive;
+}
 body {
     font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
+}
+body {
+  background-color: darkslategrey;
+  color: azure;
+  font-size: 1.1em;
 }
 #map
   body,
@@ -34,7 +42,12 @@ body {
 #plot2, #plot5 {
   width: 640;
 }
+h4 {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: black;
+  font-size: 1em;
 
+}
 /* GRETEL ADDED THE FOLLOWING CSS */
 .d3-tip {
   line-height: 1;
