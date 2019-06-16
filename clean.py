@@ -30,49 +30,16 @@ def clean_income():
     # Verify data is of correct type
     income_df.dtypes
 
+    # Find median income for all of NJ
+    income_df["NJ_MED"] = income_df.INCOME.median()
+
+    # Find percentile rank for income in each county and round to 2 decimal places
+    income_df['PERC_RANK'] = income_df.INCOME.rank(pct=True)*100
+    income_df['PERC_RANK'] = income_df['PERC_RANK'].round(decimals = 2)
+
     # Connect to database and drop/insert 'income' table if exists
     conn = sqlite3.connect('nj_db.db')
-    income_df.to_sql("income",conn,if_exists="replace")
-
-# IF WE DECIDE TO ADD GEOJSON HOSPITAL CHANGE NAME
-# def clean_geojson_hospital():
-#     """Extracts location data from geojson for hospitals.
-#     Enters data into SQL database"""
-
-
-#     hospital_file = open(os.path.join("Resources", "Hospitals.geojson"))
-#     hospital_json = json.load(hospital_file)
-#     hospital_file.close()
-
-#     conn = sqlite3.connect('nj_db.db')
-#     c = conn.cursor()
-#     c.execute('DROP TABLE IF EXISTS hospital;')
-#     c.execute("""CREATE TABLE "hospital" (
-#         "NAME"      TEXT,
-#         "TYPE"      TEXT,
-#         "COUNTY"	TEXT,
-#         "CITY"	TEXT,
-#         "LATITUDE"  NUMERIC,
-#         "LONGITUDE" NUMERIC,
-#         "ADDRESS"   TEXT
-#     )""")
-
-#     rows = []
-#     for f in hospital_json['features']:
-#         row = []
-#         row.append(f['properties']['NAME'])
-#         row.append(f['properties']['TYPE'])
-#         row.append(f['properties']['COUNTY'])
-#         row.append(f['properties']['CITY'])
-#         row.append(f['properties']['LATITUDE'])
-#         row.append(f['properties']['LONGITUDE'])
-#         row.append(f['properties']['ADDRESS'])
-
-#         rows.append(tuple(row))
-
-#     c.executemany('INSERT INTO hospital VALUES (?,?,?,?,?,?,?)', rows)
-#     conn.commit()
-#     conn.close()
+    income_df.to_sql("income", conn, if_exists="replace")
 
 
 def clean_geojson_school():
@@ -192,6 +159,7 @@ def clean_school():
     conn = sqlite3.connect('nj_db.db')
     test_df.to_sql("test",conn,if_exists="replace")
 
+
 def clean_income_zip():
     """Extracts and cleans zipcode data.
     Enters data into SQL database"""
@@ -257,6 +225,7 @@ def clean_income_zip():
     # connect to database and drop/insert tables if exists
     conn = sqlite3.connect('nj_db.db')
     zip_df.to_sql("zip",conn,if_exists="replace")
+
 
 def clean_hospital():
     """Extracts and cleans income data.
