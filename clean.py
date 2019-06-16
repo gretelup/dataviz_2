@@ -3,6 +3,37 @@ import pandas as pd
 import os
 import json
 
+def clean_income():
+    """Extracts and cleans income data.
+    Enters data into SQL database"""
+
+    # Import CSV and convert to dataframes
+    income_df = pd.read_csv(os.path.join("Resources", "NJ_Household_Income.csv"))
+
+    # Drop and rename unnecessary columns and rows
+    income_df = income_df[["County", "Household Income"]]
+    income_df = income_df.drop(income_df.index[0])
+    income_df = income_df.rename(columns={"County": "COUNTY", "Household Income": "INCOME"})
+
+    # Make county column all capitals
+    income_df["COUNTY"] = income_df["COUNTY"].str.upper()
+
+    # Verify no missing data
+    income_df.isnull().sum()
+
+    # Drop any duplicate rows
+    income_df = income_df.drop_duplicates()
+
+    # Review income to verify data is valid
+    income_df.INCOME.unique()
+
+    # Verify data is of correct type
+    income_df.dtypes
+
+    # Connect to database and drop/insert 'income' table if exists
+    conn = sqlite3.connect('nj_db.db')
+    income_df.to_sql("income",conn,if_exists="replace")
+
 # IF WE DECIDE TO ADD GEOJSON HOSPITAL CHANGE NAME
 # def clean_geojson_hospital():
 #     """Extracts location data from geojson for hospitals.
@@ -162,7 +193,7 @@ def clean_school():
     test_df.to_sql("test",conn,if_exists="replace")
 
 def clean_income_zip():
-    """Extracts and cleans income and zipcode data.
+    """Extracts and cleans zipcode data.
     Enters data into SQL database"""
 
 
@@ -225,7 +256,6 @@ def clean_income_zip():
 
     # connect to database and drop/insert tables if exists
     conn = sqlite3.connect('nj_db.db')
-    IncomeZip_df.to_sql("income",conn,if_exists="replace")
     zip_df.to_sql("zip",conn,if_exists="replace")
 
 def clean_hospital():

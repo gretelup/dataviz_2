@@ -31,11 +31,7 @@ body {
   overflow:hidden;
 }
 
-#school-plots {
-  height: 500;
-}
-
-#plot2 {
+#plot2, #plot5 {
   width: 640;
 }
 
