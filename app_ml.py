@@ -5,6 +5,8 @@ import pandas as pd
 import os
 import csv
 import statistics
+import math
+
 from flask import (
     Flask,
     render_template,
@@ -36,6 +38,7 @@ hospital_json = json.load(hospital_file)
 # Set variable for county geojson to be passed in route
 county_file = open(os.path.join(currdir,"Resources", "counties.geojson"))
 county_json = json.load(county_file)
+
 # Clean data and import into database
 # clean_geojson_hospital()
 clean_geojson_school()
@@ -46,7 +49,6 @@ clean_income()
 
 #Create an empty score to percentile dictionary
 def csvmap(csvname):
-    #call with 2 parameters
     csvpath = os.path.join(currdir,'Resources', csvname)
     score_to_pctl = {}
     f = open(csvpath)
@@ -118,23 +120,21 @@ def school_county(COUNTY):
     c = conn.cursor()
 
     query='''SELECT SCHOOL.COUNTY county,
-        ROUND(AVG(TEST.MATH_SCH_AVG), 2) math_avg, ROUND(AVG(TEST.ENG_SCH_AVG), 2) eng_avg,
-        ROUND((AVG(TEST.MATH_SCH_AVG)+AVG(TEST.ENG_SCH_AVG)),2) total_avg,
-        ROUND(AVG(TEST.MATH_STATE_AVG), 2) math_state_avg, ROUND(AVG(TEST.ENG_STATE_AVG), 2) eng_state_avg
-        FROM SCHOOL
-        JOIN TEST ON TEST.DS_CODE=SCHOOL.DS_CODE
-        WHERE SCHOOL.COUNTY = ?
-        GROUP BY SCHOOL.COUNTY'''
+        ROUND(AVG(test.MATH_SCH_AVG), 2) math_avg, ROUND(AVG(test.ENG_SCH_AVG), 2) eng_avg,
+        ROUND((AVG(test.MATH_SCH_AVG)+AVG(test.ENG_SCH_AVG)),2) total_avg,
+        ROUND(AVG(test.MATH_STATE_AVG), 2) math_state_avg, ROUND(AVG(TEST.ENG_STATE_AVG), 2) eng_state_avg
+        FROM school
+        JOIN test ON TEST.DS_CODE=SCHOOL.DS_CODE
+        WHERE school.county = ?
+        GROUP BY school.county'''
     
 
     data = c.execute(query,[COUNTY]).fetchall()
-
     school_list=[]
-    import math
-
+    
     #Pass parameters to open csv file and return dictionary
-    csvtest = csvmap("Math1.csv")
-    csvRW = csvmap("RW.csv")
+    csvtest = csvmap("SATmapMATH.csv")
+    csvRW = csvmap("SATmapRW.csv")
 
     #Loop thru rows and calculate county math and eng avg and percentile
     for row in data:
@@ -192,8 +192,8 @@ def school_state():
 
     data=c.execute(query_s).fetchall()
     test_dict=[]
-    for d in data:
-        dict={"county": d[0], "sat_avg":d[1]}
+    for row in data:
+        dict={"county": row[0], "sat_avg":row[1]}
         test_dict.append(dict)
     
     conn.commit()
@@ -209,43 +209,20 @@ def hospital_state():
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
     
-    # data = c.execute()
+   
     query_h='''SELECT COUNTY, ROUND(AVG(RATE), 2) avg_rate
         FROM hospitals
         GROUP BY COUNTY'''
     data=c.execute(query_h).fetchall()
     hosp_county_dict=[]
-    for d in data:
-        dict={"county":d[0],"avg_rate":d[1]}
+    for row in data:
+        dict={"county":row[0],"avg_rate":row[1]}
         hosp_county_dict.append(dict)
     
     conn.commit()
     conn.close()
     return jsonify(hosp_county_dict)
 
-# REVISIT THIS LATER
-# @app.route('/school/cities/<CITY>')
-# def school_city(CITY):
-#     """DESCRIBE WHAT THIS DOES"""
-    
-#     conn = sqlite3.connect('nj_db.db')
-#     c = conn.cursor()
-#     data = c.execute('SELECT * FROM school WHERE CITY = ?',[CITY]).fetchall()
-#     conn.commit()
-#     conn.close()
-#     return jsonify(data)
-   
-
-# @app.route('/hospital/cities/<CITY>')
-# def hospital_city(CITY):
-#     """DESCRIBE WHAT THIS DOES"""
-    
-#     conn = sqlite3.connect('nj_db.db')
-#     c = conn.cursor()
-#     data = c.execute('SELECT * FROM hospital WHERE CITY = ?',[CITY]).fetchall()
-#     conn.commit()
-#     conn.close()
-#     return jsonify(data)
 
 if __name__ == '__main__':
     app.run(debug=False, port=8000, host='localhost', threaded=True)
