@@ -1,7 +1,5 @@
-
-
 // Set style for layers
-var stylelayer = {
+var styleLayer = {
   default: {
     color: "blue",
     opacity: 1,
@@ -35,19 +33,21 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 queryUrl = "/counties/location"
 $.get(queryUrl, function (data) {
   L.geoJson(data, {
-    style: stylelayer.default,
+    style: styleLayer.default,
     onEachFeature: onEachFeature
   }).addTo(map);
 });
 
-// Initialize NJ wide school plot
+// Initialize NJ wide school and income plots
 schoolNJPlotInit();
+incomeNJPlotInit();
 
 // Create plots for selected county
 function createPlots(county) {
   d3.select("#selectedCounty")
     .html(`You have selected scenic <strong>${county} County!`);
-  schoolCountyPlot(county)
+  incomeNJPlot(county);
+  schoolCountyPlot(county);
   hospitalCountyPlot(county);
   hospitalNJPlot(county);
   schoolNJPlot(county);
@@ -59,6 +59,7 @@ function resetPlots() {
   d3.select("#plot3").html("");
   d3.select("#plot4").html("");
   schoolNJPlotReset();
+  incomeNJPlotReset();
 }
 
 // Define mouse commands
@@ -66,25 +67,25 @@ function onEachFeature(feature, layer) {
   layer.on({
     mouseover: highlightFeature,
     mouseout: resetHighlight,
-    click: zoomToFeature
+    click: selectCounty
   });
 }
 
 // Highlight, zoom, and create plots for selected county
-function zoomToFeature(e) {
+function selectCounty(tile) {
 
-  var layer = e.target;
-  var feature = e.target.feature;
-  var county = feature.properties.COUNTY
+  var layer = tile.target;
+  var feature = tile.target.feature;
+  var county = feature.properties.COUNTY;
 
   if (feature == selectedFeature) {
     selectedFeature = "nonsense";
-    setStyleLayer(layer, stylelayer.default);
+    setstyleLayer(layer, styleLayer.default);
     map.setView([40.0583, -74.4057], 8); 
     resetPlots();
   }
   else {
-    setStyleLayer(layer, stylelayer.highlight);
+    setstyleLayer(layer, styleLayer.highlight);
     map.fitBounds(layer.getBounds());
     selectedFeature = feature;
     createPlots(county);
@@ -92,25 +93,25 @@ function zoomToFeature(e) {
 }
 
 // Adds highlighting styling to county
-function highlightFeature(e) {
-  var layer = e.target;
-  layer.setStyle(stylelayer.highlight);
+function highlightFeature(tile) {
+  var layer = tile.target;
+  layer.setStyle(styleLayer.highlight);
 }
 
 
 // Removes highlight styling from county 
-function resetHighlight(e) {
-  var layer = e.target;
-  if (layer.style == stylelayer.default) {
-    setStyleLayer(layer, stylelayer.highlight);
+function resetHighlight(tile) {
+  var layer = tile.target;
+  if (layer.style == styleLayer.default) {
+    setstyleLayer(layer, styleLayer.highlight);
   }
   else {
-    setStyleLayer(layer, stylelayer.default);
+    setstyleLayer(layer, styleLayer.default);
   }
 }
 
 // Sets specified styling to selected layer
-function setStyleLayer(layer, styleSelected) {
+function setstyleLayer(layer, styleSelected) {
   layer.setStyle(styleSelected)
 }
 

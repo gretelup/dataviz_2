@@ -13,8 +13,9 @@ from clean import (
     # clean_geojson_hospital,
     clean_geojson_school,
     clean_school,
-    clean_income_zip,
-    clean_hospital)
+    clean_income,
+    clean_hospital,
+    clean_income_zip)
 
 
 # Set up Flask
@@ -38,6 +39,7 @@ clean_geojson_school()
 clean_school()
 clean_income_zip()
 clean_hospital()
+clean_income()
 
 #Create routes 
 
@@ -45,35 +47,45 @@ clean_hospital()
 def index():
     """Render the homepage."""
     
-    # PUT CODE HERE
+
     return render_template("index.html")
 
 
 @app.route("/counties/location")
 def counties_locations():
-    """Returns geojson of counties for NJ"""
+    """Returns geojson of countiesf for NJ"""
     
-    # PUT CODE HERE
     return jsonify(county_json)
 
 
-@app.route('/counties')
+@app.route("/counties")
 def counties():
-    """Returns jsonified list of all counties in NJ"""
+    """Returns list of counties for NJ"""
 
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
-
     data = c.execute('SELECT DISTINCT COUNTY FROM hospitals').fetchall()
-    # county_dict=[]
-    # for d in data:
-    #     dict={"county":d[0]}
-    #     county_dict.append(dict)
-    #Returns 21 county
+    
+    return jsonify(data)
+
+
+@app.route("/income/state")
+def income():
+    """Returns jsonified list of income for all counties in NJ"""
+
+    conn = sqlite3.connect('nj_db.db')
+    c = conn.cursor()
+    data = c.execute('''SELECT COUNTY, INCOME
+        FROM income''').fetchall()
     conn.commit()
     conn.close()
-    # return jsonify(county_dict)
-    return jsonify(data)
+
+    income_dict=[]
+    for d in data:
+        dict={"county":d[0],"income":d[1],}
+        income_dict.append(dict)
+    
+    return jsonify(income_dict)
 
 
 @app.route('/school/counties/<COUNTY>')
@@ -125,7 +137,7 @@ def hospital_county(COUNTY):
     return jsonify(hospitals_dict)
 
 
-# SMITA/MIKE - WE NEED TO INCLUDE COUNTY IN THIS REQUIRES JOIN
+
 @app.route('/school/state')
 def school_state():
     """Returns jsonified list of average SAT scores for state """
