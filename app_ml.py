@@ -3,6 +3,8 @@ import json
 import sqlite3
 import pandas as pd
 import os
+import csv
+import statistics
 from flask import (
     Flask,
     render_template,
@@ -25,13 +27,14 @@ app = Flask(__name__)
 conn = sqlite3.connect('nj_db.db')
 
 # Add geojson data to database
-school_file = open(os.path.join("Resources", "school.geojson"))
+currdir = os.path.dirname(__file__)
+school_file = open(os.path.join(currdir,"Resources", "school.geojson"))
 school_json = json.load(school_file)
-hospital_file = open(os.path.join("Resources", "hospitals.geojson"))
+hospital_file = open(os.path.join(currdir,"Resources", "hospitals.geojson"))
 hospital_json = json.load(hospital_file)
 
 # Set variable for county geojson to be passed in route
-county_file = open(os.path.join("Resources", "counties.geojson"))
+county_file = open(os.path.join(currdir,"Resources", "counties.geojson"))
 county_json = json.load(county_file)
 # Clean data and import into database
 # clean_geojson_hospital()
@@ -40,6 +43,24 @@ clean_school()
 clean_income_zip()
 clean_hospital()
 clean_income()
+
+#Create an empty score to percentile dictionary
+def csvmap(csvname):
+    #call with 2 parameters
+    csvpath = os.path.join(currdir,'Resources', csvname)
+    score_to_pctl = {}
+    f = open(csvpath)
+    headers = None
+    for line in f:
+        if headers == None:
+            headers = line
+        else:
+            parts = line.strip().split(',')
+            score = int(parts[0]) 
+            pctl = parts[1]
+            score_to_pctl[score] = [pctl]
+    return score_to_pctl
+
 
 #Create routes 
 
@@ -98,26 +119,41 @@ def school_county(COUNTY):
 
     query='''SELECT SCHOOL.COUNTY county,
         ROUND(AVG(TEST.MATH_SCH_AVG), 2) math_avg, ROUND(AVG(TEST.ENG_SCH_AVG), 2) eng_avg,
+        ROUND((AVG(TEST.MATH_SCH_AVG)+AVG(TEST.ENG_SCH_AVG)),2) total_avg,
         ROUND(AVG(TEST.MATH_STATE_AVG), 2) math_state_avg, ROUND(AVG(TEST.ENG_STATE_AVG), 2) eng_state_avg
         FROM SCHOOL
         JOIN TEST ON TEST.DS_CODE=SCHOOL.DS_CODE
         WHERE SCHOOL.COUNTY = ?
         GROUP BY SCHOOL.COUNTY'''
+    
 
     data = c.execute(query,[COUNTY]).fetchall()
-    school_dict=[]
-    for d in data:
-        dict={"county":d[0],"math_avg":d[1],"eng_avg":d[2],"math_state_avg":d[3],
-        "eng_state_avg":d[4]}
-        school_dict.append(dict)
+
+    school_list=[]
+    import math
+
+    #Pass parameters to open csv file and return dictionary
+    csvtest = csvmap("Math1.csv")
+    csvRW = csvmap("RW.csv")
+
+    #Loop thru rows and calculate county math and eng avg and percentile
+    for row in data:
+        math_avg = 10*math.ceil(row[1]/10)
+        eng_avg = 10*math.ceil(row[2]/10)
+        math_pctl = csvtest[math_avg][0]
+        eng_pctl = csvRW[eng_avg][0]
+        print(row)
+        school={"county":row[0],"math_avg":row[1],"eng_avg":row[2],"total_avg":row[3],"math_state_avg":row[4],
+        "eng_state_avg":row[5],"math_pctl":math_pctl,"eng_pctl":eng_pctl}
+        school_list.append(school)
     conn.commit()
     conn.close()
-    return jsonify(school_dict)
+    return jsonify(school_list)
 
-
+  
 @app.route('/hospital/counties/<COUNTY>')
 def hospital_county(COUNTY):
-    """Returns jsonified list of rating informatin for hospitals
+    """Returns jsonified list of rating information for hospitals
     in specified county"""
 
 
@@ -128,16 +164,19 @@ def hospital_county(COUNTY):
         JOIN zip Z
         WHERE H.zip=Z.zip AND COUNTY = ?'''
     data = c.execute(query2,[COUNTY]).fetchall()
-    hospitals_dict=[]
+    hospitals_list=[]
     for d in data:
-        dict={"name":d[0],"city":d[1],"zip":d[2],"county":d[3],"rate":d[4],"care_eff":d[5],"lat":d[6],"lng":d[7]}
-        hospitals_dict.append(dict)
+        row={"name":d[0],"city":d[1],"zip":d[2],"county":d[3],"rate":d[4],"care_eff":d[5],"lat":d[6],"lng":d[7]}
+        hospitals_list.append(row)
+    rate = [int(x[4]) for x in data]
+    median_rate = statistics.median(rate)
+    hospitals_stats = {"median": median_rate}
+    hospitals_dict = {"list": hospitals_list, "stats": hospitals_stats}
     conn.commit()
     conn.close()
     return jsonify(hospitals_dict)
 
-
-
+   
 @app.route('/school/state')
 def school_state():
     """Returns jsonified list of average SAT scores for state """
