@@ -1,0 +1,68 @@
+body {
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
+}
+#map
+  body,
+  html {
+    display: inline-block;
+    height: 100%;
+    width: 100%;
+  }
+
+#map {
+  display: inline-block;
+    height: 100%;
+    width: 100%;
+    
+  }
+.box {
+  background-color: darkkhaki;
+  padding: 1em;
+  border: 1px solid #cccc99;
+  border-radius: 10px;
+}
+#ALL-plots {
+  display: inline-block;
+  width: 90%;
+
+}
+#plot3,#plot4 {
+  max-height: calc(200px + 20px) !important;
+  overflow:hidden;
+}
+
+#school-plots {
+  height: 500;
+}
+
+#plot2 {
+  width: 640;
+}
+
+.d3-tip {
+  line-height: 1;
+  font-weight: bold;
+  padding: 12px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+}
+
+.d3-tip:after {
+  box-sizing: border-box;
+  display: inline;
+  font-size: 10px;
+  width: 100%;
+  line-height: 1;
+  color: rgba(0, 0, 0, 0.8);
+  content: "\25BC";
+  position: absolute;
+  text-align: center;
+}
+
+.d3-tip.n:after {
+  margin: -1px 0 0 0;
+  top: 100%;
+  left: 0;
+}
+

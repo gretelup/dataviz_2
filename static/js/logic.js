@@ -1,3 +1,5 @@
+
+
 // Set style for layers
 var stylelayer = {
   default: {
@@ -38,23 +40,25 @@ $.get(queryUrl, function (data) {
   }).addTo(map);
 });
 
-// GRETEL - UPDATE THIS AS NECESSARY
-// ADD TITLE TO MAPS - CREATE AN ID AND POPULATE IT W/ COUNTY NAME
+// Initialize NJ wide school plot
+schoolNJPlotInit();
+
 // Create plots for selected county
 function createPlots(county) {
   d3.select("#selectedCounty")
     .html(`You have selected scenic <strong>${county} County!`);
   schoolCountyPlot(county)
   hospitalCountyPlot(county);
-  hospitalNJPlot();
+  hospitalNJPlot(county);
+  schoolNJPlot(county);
   // reportCard(county);
 }
 
 function resetPlots() {
-  d3.select("#plot1").html("");
-  d3.select("#plot2").html("");
+  d3.select("#plot1").html("");;
   d3.select("#plot3").html("");
   d3.select("#plot4").html("");
+  schoolNJPlotReset();
 }
 
 // Define mouse commands
