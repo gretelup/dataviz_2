@@ -1,3 +1,4 @@
+// NEEDS TO CHANGE BASED ON NEW PARAMETERS ONCE PATH IS FIXED
 function schoolCountyPlot(county) {
 
   /**
@@ -10,7 +11,7 @@ function schoolCountyPlot(county) {
 
   // Fetch school data for the county
   d3.json(url).then(function (schoolData) {
-
+// NEEDS TO CHANGE BASED ON NEW PATH
     // Unpack data
     var math_avg = schoolData[0].math_avg;
     var eng_avg = schoolData[0].eng_avg;
@@ -197,7 +198,7 @@ function schoolNJPlotReset() {
   });
 }
 
-
+// ONLY CHANGE JUNE16 6PM IS HOSPITALCOUNTYPLOT
 function hospitalCountyPlot(county) {
 
   /**
@@ -212,11 +213,16 @@ function hospitalCountyPlot(county) {
   var rate_total = 0;
   var counter = 0;
 
+
   // Fetch hospital data for the county
   d3.json(url).then(function (hospitalData) {
 
+    // Extract rating informaiton from result
+    hospRatings = hospitalData.list;
+    console.log(hospRatings);
+
     // Calculate average hospital rate for county
-    hospitalData.forEach(function (d) {
+    hospRatings.forEach(function (d) {
       h_rate = +d.rate;
       counter += 1;
       rate_total += h_rate
