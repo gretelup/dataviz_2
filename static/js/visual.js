@@ -243,7 +243,7 @@ function incomeNJPlotInit() {
   */
 
   // Define SVG area dimensions
-  var svgWidth = 800;
+  var svgWidth = 600;
   var svgHeight = 400;
 
   // Define margins and dimensions of chart area
@@ -264,7 +264,7 @@ function incomeNJPlotInit() {
     
   
   var chartGroup = svg.append("g")
-    .attr("transform", `translate(${chartMargin.left}, ${chartMargin.top})`);
+    .attr("transform", `translate(${chartMargin.left}, ${chartMargin.top})`)
 
 
   // Creat a tolltip object
@@ -301,14 +301,18 @@ function incomeNJPlotInit() {
 
     // Append axes to chart
     chartGroup.append("g")
-      .call(leftAxis);
+      .call(leftAxis)
+      .attr("stroke", "black")
+      .attr("fill", "black");
     chartGroup.append("g")
       .attr("transform", `translate(0, ${chartHeight})`)
       .call(bottomAxis)
+      .attr("fill", "black")
       .selectAll("text")
       .style("text-anchor", "end")
       .attr("dx", "-.8em")
       .attr("dy", ".15em")
+      .attr("stroke", "black")
       .attr("transform", "rotate(-65)");
 
     //Create bars for chart
