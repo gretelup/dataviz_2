@@ -560,10 +560,7 @@ function reportCard(county) {
   // Construct url for path to school data for selected school
   var url_school = `/school/counties/${county}`;
 
-  // Clear existing report card
-  // d3.select("#report-card").html("");
-
-  // Fetch school data for the county
+    // Fetch school data for the county
   d3.json(url_school).then(function (schoolData) {
 
     // Unpack data
@@ -578,12 +575,29 @@ function reportCard(county) {
     d3.select("#engpercent").html(eng_percent)
   });
 
+
+
+  // Construct url for path to income data for selected school
+  var url_inc = `/income/counties/${county}`;
+
+    // Fetch income data for the county
+    d3.json(url_inc).then(function (incomeData) {
+
+    // Unpack data
+    var inc_median = incomeData[0].nj_med;
+    var inc_pctl = incomeData[0].perc_rank + "%";
+      
+    d3.select("#incomemed").html(inc_median)
+    d3.select("#incomepctl").html(inc_pctl)
+  });
+
+
   // Construct url for path to hospital data for selected county
   var url_hospital = `/hospital/counties/${county}`;
 
   // Fetch hospital data for the county
   d3.json(url_hospital).then(function (hospitalData) {
-    // console.log(hospitalData);
+    
     // Unpack data
     var conv_rate = '?';
     var hospRating = hospitalData["list"][0].rate;
@@ -621,7 +635,7 @@ function reportCard(county) {
     });
 
   
-}
+  }
  
 
 
