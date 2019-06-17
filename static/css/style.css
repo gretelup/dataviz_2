@@ -97,6 +97,7 @@ h4 {
   box-sizing: border-box;
   display: inline;
   font-size: 10px;
+  width: 100%;
   line-height: 1;
   color: rgba(0, 0, 0, 0.8);
   content: "\25BC";
@@ -120,11 +121,18 @@ td {
  font-size: 25px;
 }
 
-.imageRepeatBox {
+.report-card-card {
+  border: 1px solid black;
+  background-size: 100% 100%;
+  padding: 10px;
+  background-image: url("../images/FlagNewJersey.jpg");
+  background-repeat: no-repeat; 
+}
+/* .imageRepeatBox {
   border: 1px solid black;
   background-size: 100% 100%;
   padding: 10px;
   background-image: url("../images/FlagNewJersey.jpg");
   background-repeat: no-repeat;
-  opacity: 0.5;
-}
+
+} */

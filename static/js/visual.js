@@ -363,7 +363,6 @@ function incomeNJPlot(county) {
       .duration(100)
       .attr("fill", function (d) {
         if (d.county == county) {
-          console.log(county);
           return ("red");
         }
         else {
@@ -440,7 +439,7 @@ function reportCard(county) {
     var inc_pctl = incomeData[0].perc_rank + "%";
 
     // Fill in income data
-    d3.select("#incomemed").html(inc_median)
+    d3.select("#incomemed").html(`$${inc_median}`)
     d3.select("#incomepctl").html(inc_pctl)
   });
 
