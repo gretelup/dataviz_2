@@ -1,25 +1,18 @@
 # Import dependencies
 import json
 import sqlite3
-import pandas as pd
 import os
-import csv
 import statistics
 import math
-
 from flask import (
     Flask,
     render_template,
-    jsonify,
-    request,
-    make_response)
+    jsonify)
 from clean import (
-    # clean_geojson_hospital,
     clean_geojson_school,
     clean_school,
     clean_income,
-    clean_hospital,
-    clean_income_zip)
+    clean_hospital)
 
 
 # Set up Flask
@@ -40,19 +33,21 @@ county_file = open(os.path.join(currdir,"Resources", "counties.geojson"))
 county_json = json.load(county_file)
 
 # Clean data and import into database
-# clean_geojson_hospital()
 clean_geojson_school()
 clean_school()
-clean_income_zip()
 clean_hospital()
 clean_income()
 
-#Create an empty score to percentile dictionary
+
 def csvmap(csvname):
+    """Create an empty score to percentile dictionary"""
+    
+
     csvpath = os.path.join(currdir,'Resources', csvname)
     score_to_pctl = {}
     f = open(csvpath)
     headers = None
+    
     for line in f:
         if headers == None:
             headers = line
@@ -61,6 +56,7 @@ def csvmap(csvname):
             score = int(parts[0]) 
             pctl = parts[1]
             score_to_pctl[score] = [pctl]
+    
     return score_to_pctl
 
 
@@ -85,6 +81,7 @@ def counties_locations():
 def counties():
     """Returns list of counties for NJ"""
 
+
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
     data = c.execute('SELECT DISTINCT COUNTY FROM hospitals').fetchall()
@@ -95,6 +92,7 @@ def counties():
 @app.route("/income/state")
 def income():
     """Returns jsonified list of income for all counties in NJ"""
+
 
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
@@ -110,24 +108,24 @@ def income():
     
     return jsonify(income_dict)
 
-# @app.route("/income/counties/<COUNTY>')
-# def income_county(COUNTY):
-#     """Returns jsonified list of income for all counties in NJ"""
 
-#     conn = sqlite3.connect('nj_db.db')
-#     c = conn.cursor()
-#     data = c.execute('''SELECT COUNTY, INCOME, NJ_MED, PERC_RANK
-#         FROM income''').fetchall()
-#     conn.commit()
-#     conn.close()
+@app.route("/income/counties/<COUNTY>")
+def income_county(COUNTY):
+    """Returns jsonified list of income for all counties in NJ"""
 
-#     income_dict=[]
-#     for d in data:
-#         dict={"county": d[0] ,"income": d[1], "nj_med": d[2], "perc_rank": d[3]}
-#         income_dict.append(dict)
+    conn = sqlite3.connect('nj_db.db')
+    c = conn.cursor()
+    data = c.execute('''SELECT COUNTY, INCOME, NJ_MED, PERC_RANK
+        FROM income''').fetchall()
+    conn.commit()
+    conn.close()
+
+    income_dict=[]
+    for d in data:
+        dict={"county": d[0] ,"income": d[1], "nj_med": d[2], "perc_rank": d[3]}
+        income_dict.append(dict)
     
-#     return jsonify(income_dict)
-
+    return jsonify(income_dict)
 
 
 @app.route('/school/counties/<COUNTY>')
@@ -147,7 +145,6 @@ def school_county(COUNTY):
         WHERE school.county = ?
         GROUP BY school.county'''
     
-
     data = c.execute(query,[COUNTY]).fetchall()
     school_list=[]
     
@@ -177,21 +174,27 @@ def hospital_county(COUNTY):
 
     conn = sqlite3.connect('nj_db.db')
     c = conn.cursor()
-    query2='''SELECT H.NAME,H.CITY,H.ZIP,H.COUNTY,H.RATE,H.CARE_EFF,Z.LAT,Z.LNG 
+    
+    query2='''SELECT H.COUNTY, H.RATE
         FROM hospitals H
-        JOIN zip Z
-        WHERE H.zip=Z.zip AND COUNTY = ?'''
+        WHERE COUNTY = ?'''
+    
     data = c.execute(query2,[COUNTY]).fetchall()
+    
     hospitals_list=[]
     for d in data:
-        row={"name":d[0],"city":d[1],"zip":d[2],"county":d[3],"rate":d[4],"care_eff":d[5],"lat":d[6],"lng":d[7]}
+        row={"county":d[0], "rate":d[1]}
         hospitals_list.append(row)
-    rate = [int(x[4]) for x in data]
+    
+    rate = [int(x[1]) for x in data]
     median_rate = statistics.median(rate)
+    
     hospitals_stats = {"median": median_rate}
     hospitals_dict = {"list": hospitals_list, "stats": hospitals_stats}
+    
     conn.commit()
     conn.close()
+    
     return jsonify(hospitals_dict)
 
    
@@ -216,6 +219,7 @@ def school_state():
     
     conn.commit()
     conn.close()
+    
     return jsonify(test_dict)
 
 
@@ -231,7 +235,9 @@ def hospital_state():
     query='''SELECT COUNTY, ROUND(AVG(RATE), 2) avg_rate
         FROM hospitals
         GROUP BY COUNTY'''
+    
     data=c.execute(query).fetchall()
+    
     hosp_county_dict=[]
     for row in data:
         dict={"county":row[0],"avg_rate":row[1]}
@@ -239,6 +245,7 @@ def hospital_state():
     
     conn.commit()
     conn.close()
+    
     return jsonify(hosp_county_dict)
 
 
