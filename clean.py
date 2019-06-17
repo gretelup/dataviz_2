@@ -7,6 +7,7 @@ def clean_income():
     """Extracts and cleans income data.
     Enters data into SQL database"""
 
+
     # Import CSV and convert to dataframes
     income_df = pd.read_csv(os.path.join("Resources", "NJ_Household_Income.csv"))
 
@@ -240,12 +241,12 @@ def clean_hospital():
     "Hospital overall rating","Safety of care national comparison","Patient experience national comparison",
     "Effectiveness of care national comparison"]]
 
-    # Count Number of null data
+    # Verify no missing data
     hospital_df.isnull().sum() 
 
     # Verify data are of correct type
-    # hospital_df.dtypes
-    # hospital_df.infer_objects().dtypes
+    hospital_df.dtypes
+    hospital_df.infer_objects().dtypes
     hospital_df.dtypes
 
     # Drop any duplicate rows

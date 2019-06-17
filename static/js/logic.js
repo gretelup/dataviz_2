@@ -39,27 +39,25 @@ $.get(queryUrl, function (data) {
 });
 
 // Initialize NJ wide school and income plots
-schoolNJPlotInit();
 incomeNJPlotInit();
 
 // Create plots for selected county
 function createPlots(county) {
   d3.select("#selectedCounty")
-    .html(`You have selected scenic <strong>${county} County!`);
+    .text(`${county} County!`);
   incomeNJPlot(county);
   schoolCountyPlot(county);
   hospitalCountyPlot(county);
   hospitalNJPlot(county);
-  schoolNJPlot(county);
-  // reportCard(county);
+  reportCard(county);
 }
 
 function resetPlots() {
-  d3.select("#plot1").html("");;
-  d3.select("#plot3").html("");
-  d3.select("#plot4").html("");
-  schoolNJPlotReset();
+  d3.select("#SAT-plot").html("");;
+  d3.select("#hosp-county-plot").html("");
+  d3.select("#hosp-NJ-plot").html("");
   incomeNJPlotReset();
+  reportCardReset();
 }
 
 // Define mouse commands

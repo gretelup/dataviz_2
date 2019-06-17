@@ -1,4 +1,3 @@
-// NEEDS TO CHANGE BASED ON NEW PARAMETERS ONCE PATH IS FIXED
 function schoolCountyPlot(county) {
 
   /**
@@ -11,7 +10,7 @@ function schoolCountyPlot(county) {
 
   // Fetch school data for the county
   d3.json(url).then(function (schoolData) {
-// NEEDS TO CHANGE BASED ON NEW PATH
+
     // Unpack data
     var math_avg = schoolData[0].math_avg;
     var eng_avg = schoolData[0].eng_avg;
@@ -31,174 +30,19 @@ function schoolCountyPlot(county) {
       name: 'State',
       type: 'bar'
     };
+    
     var data = [trace1, trace2];
-    var layout = { barmode: 'group' };
+    
+    var layout = {
+      barmode: 'group' ,
+    };
 
     // Generate bar chart
-    Plotly.newPlot("plot1", data, layout);
+    Plotly.newPlot("SAT-plot", data, layout);
   });
 }
 
 
-function schoolNJPlotInit() {
-
-  /**
-  /* Builds initial chart for school data for whole state
-  */
-
-  // Define SVG area dimensions
-  var svgWidth = 600;
-  var svgHeight = 400;
-
-  // Define margins and dimensions of chart area
-  var chartMargin = {
-    top: 30,
-    right: 30,
-    bottom: 70,
-    left: 40
-  };
-  var chartWidth = svgWidth - chartMargin.left - chartMargin.right;
-  var chartHeight = svgHeight - chartMargin.top - chartMargin.bottom;
-
-  // Create svg object and append a group
-  var svg = d3.select("#plot2")
-    .append("svg")
-    .attr("width", svgWidth)
-    .attr("height", svgHeight);
-  var chartGroup = svg.append("g")
-    .attr("transform", `translate(${chartMargin.left}, ${chartMargin.top})`);
-
-  // Creat a tolltip object
-  var toolTip = d3.tip()
-    .attr("class", "d3-tip")
-    .offset([-10, 0])
-    .html(function (d) {
-      return (`<strong>${d.county}</strong><br>${d.sat_avg}`);
-    })
-
-  // Construct url for path to school data for state
-  var url = `/school/state`;
-
-  // Fetch school data for all counties in the state
-  d3.json(url).then(function (schoolData) {
-
-    // Round SAT averages
-    schoolData.forEach(function (d) {
-      d.sat_avg = Math.round(+d.sat_avg);
-    });
-
-    // Configure x and y scales
-    var xBandScale = d3.scaleBand()
-      .domain(schoolData.map(d => d.county))
-      .range([0, chartWidth])
-      .padding(0.2);
-    var yLinearScale = d3.scaleLinear()
-      .domain([0, 1600])
-      .range([chartHeight, 0]);
-
-    // Define functions to create axes
-    var bottomAxis = d3.axisBottom(xBandScale);
-    var leftAxis = d3.axisLeft(yLinearScale).ticks(10);
-
-    // Append axes to chart
-    chartGroup.append("g")
-      .call(leftAxis);
-    chartGroup.append("g")
-      .attr("transform", `translate(0, ${chartHeight})`)
-      .call(bottomAxis)
-      .selectAll("text")
-      .style("text-anchor", "end")
-      .attr("dx", "-.8em")
-      .attr("dy", ".15em")
-      .attr("transform", "rotate(-65)");
-
-    //Create bars for chart
-    chartGroup.selectAll("rect")
-      .data(schoolData)
-      .enter()
-      .append("rect")
-      .attr("width", xBandScale.bandwidth())
-      .attr("height", d => chartHeight - yLinearScale(d.sat_avg))
-      .attr("x", d => xBandScale(d.county))
-      .attr("y", d => yLinearScale(d.sat_avg))
-      .attr("fill", "blue")
-      .on("mouseover", toolTip.show)
-      .on("mouseout", toolTip.hide)
-
-    // Add tooltips for chart
-    chartGroup.call(toolTip);
-  });
-}
-
-
-function schoolNJPlot(county) {
-
-  /**
-  /* Updates state school bar chart for selected given county
-  /* @param {string}    county    Name of selected county
-  */
-
-  // Create svg object
-  var svg = d3.select("#plot2")
-
-  // Construct url for path to school data for state
-  var url = `/school/state`;
-
-  // Fetch school data for all counties in the state
-  d3.json(url).then(function (schoolData) {
-
-    // Create object for all bars in chart
-    var bars = svg.selectAll("rect")
-      .data(schoolData)
-
-    // Update color of bar for selected copy
-    bars.enter()
-      .append("rect")
-      .merge(bars)
-      .transition()
-      .duration(100)
-      .attr("fill", function (d) {
-        if (d.county == county) {
-          return ("red");
-        }
-        else {
-          return ("blue");
-        }
-      });
-  });
-}
-
-
-function schoolNJPlotReset() {
-
-  /**
-  /* Resets colors of state school bar chart
-  */
-
-  // Create svg object
-  var svg = d3.select("#plot2")
-
-  // Construct url for path to school data for state
-  var url = `/school/state`;
-
-  // Fetch school data for all counties in the state
-  d3.json(url).then(function (schoolData) {
-
-    // Create object for all bars in chart
-    var bars = svg.selectAll("rect")
-      .data(schoolData)
-
-    // Update color of bar for selected copy
-    bars.enter()
-      .append("rect")
-      .merge(bars)
-      .transition()
-      .duration(100)
-      .attr("fill", "blue");
-  });
-}
-
-// ONLY CHANGE JUNE16 6PM IS HOSPITALCOUNTYPLOT
 function hospitalCountyPlot(county) {
 
   /**
@@ -219,7 +63,6 @@ function hospitalCountyPlot(county) {
 
     // Extract rating informaiton from result
     hospRatings = hospitalData.list;
-    console.log(hospRatings);
 
     // Calculate average hospital rate for county
     hospRatings.forEach(function (d) {
@@ -294,7 +137,7 @@ function hospitalCountyPlot(county) {
         showgrid: false, range: [-1, 1]
       }
     };
-    Plotly.newPlot("plot3", data, layout);
+    Plotly.newPlot("hosp-county-plot", data, layout);
   });
 }
 
@@ -388,7 +231,7 @@ function hospitalNJPlot() {
         showgrid: false, range: [-1, 1]
       }
     };
-    Plotly.newPlot("plot4", data, layout);
+    Plotly.newPlot("hosp-NJ-plot", data, layout);
   });
 }
 
@@ -400,33 +243,36 @@ function incomeNJPlotInit() {
   */
 
   // Define SVG area dimensions
-  var svgWidth = 600;
+  var svgWidth = 800;
   var svgHeight = 400;
 
   // Define margins and dimensions of chart area
   var chartMargin = {
-    top: 30,
+    top: 50,
     right: 30,
-    bottom: 70,
-    left: 40
+    bottom: 80,
+    left: 60
   };
   var chartWidth = svgWidth - chartMargin.left - chartMargin.right;
   var chartHeight = svgHeight - chartMargin.top - chartMargin.bottom;
 
   // Create svg object and append a group
-  var svg = d3.select("#plot5")
+  var svg = d3.select("#Income-plot")
     .append("svg")
     .attr("width", svgWidth)
-    .attr("height", svgHeight);
+    .attr("height", svgHeight)
+    
+  
   var chartGroup = svg.append("g")
     .attr("transform", `translate(${chartMargin.left}, ${chartMargin.top})`);
+
 
   // Creat a tolltip object
   var toolTip = d3.tip()
     .attr("class", "d3-tip")
     .offset([-10, 0])
     .html(function (d) {
-      return (`<strong>${d.county}</strong><br>${d.income}`);
+      return (`<strong>${d.county}</strong><br>$${d.income}<br>${d.perc_rank}th percentile`);
     });
 
   // Construct url for path to income data for state
@@ -483,6 +329,7 @@ function incomeNJPlotInit() {
   });
 }
 
+
 function incomeNJPlot(county) {
 
   /**
@@ -492,7 +339,7 @@ function incomeNJPlot(county) {
 
 
   // Create svg object
-  var svg = d3.select("#plot5");
+  var svg = d3.select("#Income-plot");
 
   // Construct url for path to income data for state
   var url = `/income/state`;
@@ -530,7 +377,7 @@ function incomeNJPlotReset() {
   */
 
   // Create svg object
-  var svg = d3.select("#plot5");
+  var svg = d3.select("#Income-plot");
 
   // Construct url for path to income data for state
   var url = `/income/state`;
@@ -551,42 +398,44 @@ function incomeNJPlotReset() {
       .attr("fill", "blue");
   });
 }
+
+
 function reportCard(county) {
-/**
- *  /* Builds report card for given county
-  /* @param {string}    county    Name of selected county
-  */
+  /**
+   *  /* Builds report card for given county
+    /* @param {string}    county    Name of selected county
+    */
 
   // Construct url for path to school data for selected school
   var url_school = `/school/counties/${county}`;
 
-    // Fetch school data for the county
+  // Fetch school data for the county
   d3.json(url_school).then(function (schoolData) {
 
-    // Unpack data
+    // Unpack and format data
     var math_avg = schoolData[0].math_avg;
     var eng_avg = schoolData[0].eng_avg;
     var math_percent = schoolData[0].math_pctl + "%";
     var eng_percent = schoolData[0].eng_pctl + "%";
-    
+
+    // Fill in fields for hospital in report card
     d3.select("#mathscr").html(math_avg)
     d3.select("#mathpercent").html(math_percent)
     d3.select("#engscr").html(eng_avg)
     d3.select("#engpercent").html(eng_percent)
   });
 
-
-
   // Construct url for path to income data for selected school
   var url_inc = `/income/counties/${county}`;
 
-    // Fetch income data for the county
-    d3.json(url_inc).then(function (incomeData) {
+  // Fetch income data for the county
+  d3.json(url_inc).then(function (incomeData) {
 
-    // Unpack data
+    // Unpack data and format data
     var inc_median = incomeData[0].nj_med;
     var inc_pctl = incomeData[0].perc_rank + "%";
-      
+
+    // Fill in income data
     d3.select("#incomemed").html(inc_median)
     d3.select("#incomepctl").html(inc_pctl)
   });
@@ -597,46 +446,57 @@ function reportCard(county) {
 
   // Fetch hospital data for the county
   d3.json(url_hospital).then(function (hospitalData) {
-    
+
     // Unpack data
     var conv_rate = '?';
     var hospRating = hospitalData["list"][0].rate;
 
-    if (hospRating >= 5){
+    if (hospRating >= 5) {
       conv_rate = "A";
     }
-    else if (hospRating>=4){
+    else if (hospRating >= 4) {
       conv_rate = "B";
     }
-    else if (hospRating>=3){
+    else if (hospRating >= 3) {
       conv_rate = "C";
     }
-    else if (hospRating>=2){
+    else if (hospRating >= 2) {
       conv_rate = "D";
     }
-    else{
+    else {
       conv_rate = "F";
     }
 
-    
-    //
+    // Fill in fields for hospital in report card
     d3.select("#hospitalrate").html(hospRating)
     d3.select("#grade").html(conv_rate)
-    
-
-    // Fill in fields for hospital in report card
-
     d3.select("#report-card")
       .append("p")
       .classed("", true)
       .append("p")
       .classed("", true)
-      
-    });
 
-  
-  }
- 
+  });
+}
 
+function reportCardReset() {
+  /**
+  /* Resets data in report card
+  */
 
+ d3.select("#mathscr").html("")
+ d3.select("#mathpercent").html("")
+ d3.select("#engscr").html("")
+ d3.select("#engpercent").html("")
+ d3.select("#incomemed").html("")
+  d3.select("#incomepctl").html("")
+  d3.select("#hospitalrate").html("")
+  d3.select("#grade").html("")
+  // DO WE NEED TO DO THIS?
+  d3.select("#report-card")
+    .append("p")
+    .classed("", true)
+    .append("p")
+    .classed("", true)
 
+};
