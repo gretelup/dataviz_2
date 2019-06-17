@@ -17,8 +17,8 @@ var styleLayer = {
 
 // Create map object
 map = L.map("map", {
-  center: [40.0583, -74.4057],
-  zoom: 8,
+  center: [40.042, -74.7],
+  zoom: 8.5,
 });
 
 // Set street tile layer
@@ -79,7 +79,7 @@ function selectCounty(tile) {
   if (feature == selectedFeature) {
     selectedFeature = "nonsense";
     setstyleLayer(layer, styleLayer.default);
-    map.setView([40.0583, -74.4057], 8); 
+    map.setView([40.042, -74.7], 8.5); 
     resetPlots();
   }
   else {

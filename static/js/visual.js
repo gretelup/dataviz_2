@@ -34,7 +34,10 @@ function schoolCountyPlot(county) {
     var data = [trace1, trace2];
     
     var layout = {
-      barmode: 'group' ,
+      autosize: false,
+      barmode: 'group',
+      width: 550,
+      height: 400
     };
 
     // Generate bar chart
@@ -127,7 +130,7 @@ function hospitalCountyPlot(county) {
       }],
       title: '<b>Based on county</b>',
       height: 400,
-      width: 400,
+      width: 375,
       xaxis: {
         zeroline: false, showticklabels: false,
         showgrid: false, range: [-1, 1]
@@ -221,7 +224,7 @@ function hospitalNJPlot() {
       }],
       title: '<b>Based on state</b>',
       height: 400,
-      width: 400,
+      width: 375,
       xaxis: {
         zeroline: false, showticklabels: false,
         showgrid: false, range: [-1, 1]
