@@ -50,11 +50,9 @@ h4 {
 
 #map {
   text-align: center;
-  /* display: inline-block; */
+  display: inline-block;
   height: 100%;
   width: 100%;
-  /* width: 200px; 
-  height: 400px; */
   border: 2px solid #AAA;
   position:relative;
   border-radius: 40px;
