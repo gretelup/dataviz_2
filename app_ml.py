@@ -14,7 +14,6 @@ from flask import (
     request,
     make_response)
 from clean import (
-    # clean_geojson_hospital,
     clean_geojson_school,
     clean_school,
     clean_income,
@@ -40,19 +39,22 @@ county_file = open(os.path.join(currdir,"Resources", "counties.geojson"))
 county_json = json.load(county_file)
 
 # Clean data and import into database
-# clean_geojson_hospital()
 clean_geojson_school()
 clean_school()
 clean_income_zip()
 clean_hospital()
 clean_income()
 
-#Create an empty score to percentile dictionary
+
 def csvmap(csvname):
+    """Create an empty score to percentile dictionary"""
+
+
     csvpath = os.path.join(currdir,'Resources', csvname)
     score_to_pctl = {}
     f = open(csvpath)
     headers = None
+    
     for line in f:
         if headers == None:
             headers = line
@@ -61,6 +63,7 @@ def csvmap(csvname):
             score = int(parts[0]) 
             pctl = parts[1]
             score_to_pctl[score] = [pctl]
+    
     return score_to_pctl
 
 
@@ -136,13 +139,12 @@ def school_county(COUNTY):
     csvtest = csvmap("SATmapMATH.csv")
     csvRW = csvmap("SATmapRW.csv")
 
-    #Loop thru rows and calculate county math and eng avg and percentile
+    #Loop through rows and calculate county math and eng avg and percentile
     for row in data:
         math_avg = 10*math.ceil(row[1]/10)
         eng_avg = 10*math.ceil(row[2]/10)
         math_pctl = csvtest[math_avg][0]
         eng_pctl = csvRW[eng_avg][0]
-        print(row)
         school={"county":row[0],"math_avg":row[1],"eng_avg":row[2],"total_avg":row[3],"math_state_avg":row[4],
         "eng_state_avg":row[5],"math_pctl":math_pctl,"eng_pctl":eng_pctl}
         school_list.append(school)

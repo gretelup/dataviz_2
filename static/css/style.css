@@ -1,14 +1,42 @@
-h1 {
-  font-family: 'Kalam', cursive;
-}
 body {
-    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
-}
-body {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; 
   background-color: darkslategrey;
   color: azure;
   font-size: 1.1em;
 }
+
+h1 {
+  font-family: 'Kalam', cursive;
+  text-align: center;
+
+}
+
+h4 {
+  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  color: black;
+  font-size: 24;
+  text-align:center;
+
+}
+
+#header {
+  margin-top:20px;
+}
+
+#heading {
+  font-size: 80px;
+}
+
+#sub-heading {
+  font-size: 60px;
+}
+
+#img-welcome {
+  width: 75%;
+  height: auto;
+  border-radius: 30px;
+}
+
 #map
   body,
   html {
@@ -18,37 +46,45 @@ body {
   }
 
 #map {
-  display: inline-block;
-    height: 100%;
-    width: 100%;
-    
-  }
+  text-align: center;
+  /* display: inline-block; */
+  height: 100%;
+  width: 100%;
+  /* width: 200px; 
+  height: 400px; */
+  border: 2px solid #AAA;
+  position:relative;
+  border-radius: 40px;
+}
+
 .box {
   background-color: darkkhaki;
   padding: 1em;
   border: 1px solid #cccc99;
   border-radius: 10px;
 }
+#selectedCounty {
+  font-size: 60px;
+  font-family: Lucida Calligraphy;
+}
+/* GRETEL FIGURE THIS OUT */
 #ALL-plots {
   display: inline-block;
   width: 90%;
-
 }
-#plot3,#plot4 {
+#hosp-county-plot,#hospital-NJ-plot {
   max-height: calc(200px + 20px) !important;
-  overflow:hidden;
+  overflow: hidden;
+  text-align: center;
 }
 
-#plot2, #plot5 {
-  width: 640;
+#income-plot {
+  text-align: center;
+  height: 100%;
+  width: 100%;
 }
-h4 {
-  font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-  color: black;
-  font-size: 1em;
 
-}
-/* GRETEL ADDED THE FOLLOWING CSS */
+
 .d3-tip {
   line-height: 1;
   font-weight: bold;
@@ -62,7 +98,6 @@ h4 {
   box-sizing: border-box;
   display: inline;
   font-size: 10px;
-  width: 100%;
   line-height: 1;
   color: rgba(0, 0, 0, 0.8);
   content: "\25BC";
@@ -74,4 +109,23 @@ h4 {
   margin: -1px 0 0 0;
   top: 100%;
   left: 0;
+}
+
+td {
+  font-weight: bold;
+  text-shadow:
+    -1px -1px 0 #FFF,  
+    1px -1px 0 #FFF,
+    -1px 1px 0 #FFF,
+    1px 1px 0 #FFF; 
+ font-size: 25px;
+}
+
+.imageRepeatBox {
+  border: 1px solid black;
+  background-size: 100% 100%;
+  padding: 10px;
+  background-image: url("../images/FlagNewJersey.jpg");
+  background-repeat: no-repeat;
+  opacity: 0.5;
 }
