@@ -11,6 +11,7 @@ from flask import (
 from clean import (
     clean_geojson_school,
     clean_school,
+    csvmap,
     clean_income,
     clean_hospital)
 
@@ -22,14 +23,11 @@ app = Flask(__name__)
 conn = sqlite3.connect("nj_db.db")
 
 # Add geojson data to database
-currdir = os.path.dirname(__file__)
-school_file = open(os.path.join(currdir,"Resources", "school.geojson"))
+school_file = open(os.path.join("Resources", "school.geojson"))
 school_json = json.load(school_file)
-hospital_file = open(os.path.join(currdir,"Resources", "hospitals.geojson"))
-hospital_json = json.load(hospital_file)
 
 # Set variable for county geojson to be passed in route
-county_file = open(os.path.join(currdir,"Resources", "counties.geojson"))
+county_file = open(os.path.join("Resources", "counties.geojson"))
 county_json = json.load(county_file)
 
 # Clean data and import into database
@@ -37,27 +35,6 @@ clean_geojson_school()
 clean_school()
 clean_hospital()
 clean_income()
-
-
-def csvmap(csvname):
-    """Create an empty score to percentile dictionary"""
-    
-
-    csvpath = os.path.join(currdir,"Resources", csvname)
-    score_to_pctl = {}
-    f = open(csvpath)
-    headers = None
-    
-    for line in f:
-        if headers == None:
-            headers = line
-        else:
-            parts = line.strip().split(",")
-            score = int(parts[0]) 
-            pctl = parts[1]
-            score_to_pctl[score] = [pctl]
-    
-    return score_to_pctl
 
 
 #Create routes 

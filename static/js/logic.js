@@ -1,19 +1,27 @@
 // Set style for layers
 var styleLayer = {
-  default: {
+  defaultLayer: {
     color: "blue",
     opacity: 1,
     fillcolor: "blue",
     fillOpacity: 0.1,
     weight: 0.5
   },
-  highlight: {
+  highlightLayer: {
     weight: 5,
     color: "red",
     dashArray: '',
     fillOpacity: 0.7
-  }
+  },
+  chosenLayer: {
+    weight: 5,
+    color: "green",
+    dashArray: '',
+    fillOpacity: 0.7
+  },
 }
+// Initialize global variable with nonsense
+var selectedFeature = "nonsense";
 
 // Create map object
 map = L.map("map", {
@@ -33,7 +41,7 @@ L.tileLayer("https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token={
 queryUrl = "/counties/location"
 $.get(queryUrl, function (data) {
   L.geoJson(data, {
-    style: styleLayer.default,
+    style: styleLayer.defaultLayer,
     onEachFeature: onEachFeature
   }).addTo(map);
 });
@@ -77,13 +85,13 @@ function selectCounty(tile) {
   var county = feature.properties.COUNTY;
 
   if (feature == selectedFeature) {
+    layer.setStyle(styleLayer.defaultLayer);
     selectedFeature = "nonsense";
-    setstyleLayer(layer, styleLayer.default);
     map.setView([40.042, -74.7], 8.5); 
     resetPlots();
   }
   else {
-    setstyleLayer(layer, styleLayer.highlight);
+    layer.setStyle(styleLayer.chosenLayer);
     map.fitBounds(layer.getBounds());
     selectedFeature = feature;
     createPlots(county);
@@ -93,28 +101,19 @@ function selectCounty(tile) {
 // Adds highlighting styling to county
 function highlightFeature(tile) {
   var layer = tile.target;
-  layer.setStyle(styleLayer.highlight);
+  if (layer.style == layer.defaultLayer) {
+    layer.setStyle(styleLayer.highlightLayer);
+  }
 }
-
 
 // Removes highlight styling from county 
 function resetHighlight(tile) {
   var layer = tile.target;
-  if (layer.style == styleLayer.default) {
-    setstyleLayer(layer, styleLayer.highlight);
+  if (layer.style ==layer.chosenLayer) {
+    layer.setStyle(styleLayer.chosenLayer);
   }
-  else {
-    setstyleLayer(layer, styleLayer.default);
-  }
+  if (layer.style == layer.highlightLayer) {
+    layer.setStyle(styleLayer.defaultLayer);
+  } 
 }
-
-// Sets specified styling to selected layer
-function setstyleLayer(layer, styleSelected) {
-  layer.setStyle(styleSelected)
-}
-
-// Initialize global variable with nonsense
-var selectedFeature = "nonsense";
-
-
 
