@@ -15,25 +15,9 @@
   <link rel="stylesheet" href="../static/css/style.css" />
 </head>
 <style>
-  td{font-weight: 900;
-    text-shadow:
-    -1px -1px 0 #FFF,  
-   1px -1px 0 #FFF,
-   -1px 1px 0 #FFF,
-   1px 1px 0 #FFF; 
-   
-   font-size: 35px;
-  
-  }
-    .imageRepeatBox {
-      border: 1px solid black;
-      background-size: 120% 120%;
-      background-blend-mode: lighten
-      padding: 0px;
-      background-image: url("../static/images/FlagNewJersey.jpg");
-      background-repeat: no-repeat;
-    }
-  </style>
+
+</style>
+
 <body>
   <div class="row">
     <div class="col-8" id="header">
@@ -47,7 +31,7 @@
 
   <div class="row" style="height: 1500px">
     <div class="col-5">
-        <h2 id="caption">Click a County on the map to view data:</h2>
+      <h2 id="caption">Click a County on the map to view data:</h2>
       <div id="map">
       </div>
     </div>
@@ -66,13 +50,13 @@
         <div class="col-7">
           <div class="row">
             <div class="card">
-              <div class="card-body" style="width: 600px">
+              <div class="card-body" style="width: 600px;">
                 <h4>Average SAT Score: County v. NJ</h4>
                 <div id="SAT-plot"></div>
               </div>
             </div>
           </div>
-          <div class="row" style="margin-top: 20px; margin-bottom: 20px">
+          <div class="row" style="margin-top: 20px; margin-bottom: 20px;">
             <div class="card">
               <h4>Median income by County</h4>
               <div id="Income-plot"></div>
@@ -91,16 +75,12 @@
       </div>
 
       <div id="row">
-        <div class="card">
-          <div class="card-body">
-            <h4 class="card-title">County Report Card</h4>
-
-            <div id="report-card">
-              <table class="table imageRepeatBox">
-                <thead>
-
-
-                </thead>
+        <div class="container">
+          <div class="card img-fluid">
+            <img class="card-img-top" src="../static/images/FlagNewJersey.jpg" alt="Card image" style="width:100%; opacity: 0.5">
+            <div class="card-img-overlay">
+              <h2 class="card-title" style="color: black;">County Report Card</h2>
+              <table class="table">
                 <tbody>
                   <tr>
                     <th>Average SAT Math Score </th>
@@ -129,9 +109,11 @@
 
                 </tbody>
               </table>
+
             </div>
           </div>
         </div>
+
       </div>
     </div>
   </div>
