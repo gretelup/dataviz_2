@@ -163,6 +163,28 @@ def clean_school():
     test_df.to_sql("test", conn, if_exists="replace")
 
 
+def csvmap(csvname):
+    """Create a score to percentile dictionary used to convert 
+    SAT scores to percentages"""
+    
+
+    csvpath = os.path.join("Resources", csvname)
+    score_to_pctl = {}
+    f = open(csvpath)
+    headers = None
+    
+    for line in f:
+        if headers == None:
+            headers = line
+        else:
+            parts = line.strip().split(",")
+            score = int(parts[0]) 
+            pctl = parts[1]
+            score_to_pctl[score] = [pctl]
+    
+    return score_to_pctl
+
+
 def clean_hospital():
     """Extracts and cleans income data.
     Enters data into SQL database"""

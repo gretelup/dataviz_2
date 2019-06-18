@@ -22,17 +22,19 @@ A friend is looking for a place to live in New Jersey and was overwhelmed with t
 
 ## Sources
 
-* Hospital Rating Data from [Medicare](https://data.medicare.gov/Hospital-Compare/Hospital-General-Information/xubh-q36u)
-  * Includes a list of all hospitals that have been registered with Medicare
-  * Utilized hospital ratings from this dataset.
-    * Rating is assigned by Medicare on a scale of 1-5.
+* Household Income Information [Census FactFinder](https://factfinder.census.gov/faces/nav/jsf/pages/index.xhtml)
+  * Used income from 2017 based on the American Community Survey 5-Year Estimates.
 
 * New Jersey School Performance Reports from [New Jersey Department of Education](https://rc.doe.state.nj.us/ReportsDatabase.aspx)
   * Performance data for schools administered by NJ Department of Education.
   * Utilized SAT scores for 2017-2018 school year from this dataset.
 
-* Household Income Information [Census FactFinder](https://factfinder.census.gov/faces/nav/jsf/pages/index.xhtml)
-  * Used income from 2017 based on the American Community Survey 5-Year Estimates.
+<!-- MIKE - INSERT DATA INFO FOR SAT STUFF HERE -->
+
+* Hospital Rating Data from [Medicare](https://data.medicare.gov/Hospital-Compare/Hospital-General-Information/xubh-q36u)
+  * Includes a list of all hospitals that have been registered with Medicare
+  * Utilized hospital ratings from this dataset.
+    * Rating is assigned by Medicare on a scale of 1-5.
 
 * New Jersey GeoJson Data[State of New Jersey - GIS Open Data](https://njogis-newjersey.opendata.arcgis.com)
   * Used Spatial representation of counties to create county layer in mapbox.
@@ -42,32 +44,30 @@ A friend is looking for a place to live in New Jersey and was overwhelmed with t
 
 ### Step 1: Extract Data
 
+<!-- MIKE INSERT WHERE YOU GOT DATA FROM HERE -->
 * Downloaded data as csv or excel files from Medicare, NJ Department of Education, and from the Census Bureau.
 * Downloaded geoJson datasets from State of New Jersey - GIS Open Data.
 
-### Step 2: Clean Data
+### Step 2: Clean Data and Enter into Database
 
 * Developed cleaning code for csv and excel files utilizing jupyter notebook and then exported into python files.
   * Dropped hospitals with unavailable data - this may skew rating results as there are not many hospitals in each county; however we feel the information provided would still be useful.
-  * Also calculated income percentile for each county
+  * Calculated rank by income for each County.
+* Created dictionary for mapping SAT data.
 * Developed python code for extracting desired data from geoJson dataset for New Jersey schools.
 * Converted separate files into functions in python program clean.py that cleans the data and enters them into a SQL database.
-* Developed primary python file app.py that calls functions from clean.py and sets up Flask routes for rendering data
-
-<!-- Not sure if schema should be here or elsewhere -->
+* Developed primary python file app.py that calls functions from clean.py and sets up Flask routes for rendering data.
 
 ### Step 3: Render Data
 
 * HTML & CSS Files
   * index.html: Used to setup the webpage where data will be rendered
-  * style.css: css file used to style the webpage 
+  * style.css: css file used to style the webpage.
 
 * Javascript Files:
-  * logic.js: File that extracts geojson data and maps it; also integrates data from the other sources and maps them as well.
-  * config.js: stores the API key
-  * jQuery-3.4.1.mn.js: used to render the animated bar chart and for the NJ map interactions
-    https://www.jqueryscript.net/chart-graph/bar-column-chart-d3.html Gretel
-  * Visual.js: is used to create our plots and display on the webpage 
+  * logic.js: Primary javascript file that sets up map and connects functions that create visualizations to map actions.
+  * config.js: Stores the API key for mapbox.
+  * visual.js: Comprised of functions that build the visualizations called in logic.js.
 
   Javascript Packages used:
   * Mapbox
