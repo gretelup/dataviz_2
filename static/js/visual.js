@@ -275,7 +275,7 @@ function incomeNJPlotInit() {
     .attr("class", "d3-tip")
     .offset([-10, 0])
     .html(function (d) {
-      return (`<strong>${d.county}</strong><br>$${d.income}<br>${d.perc_rank}th percentile`);
+      return (`<strong>${d.county}</strong><br>$${d.income}<br>${d.rank} out of 21`);
     });
 
   // Construct url for path to income data for state
@@ -439,11 +439,11 @@ function reportCard(county) {
 
     // Unpack data and format data
     var inc_median = incomeData[0].nj_med;
-    var inc_pctl = incomeData[0].perc_rank + "%";
+    var inc_rank = incomeData[0].rank;
 
     // Fill in income data
     d3.select("#incomemed").html(`$${inc_median}`)
-    d3.select("#incomepctl").html(inc_pctl)
+    d3.select("#incomerank").html(`${inc_rank}`)
   });
 
 
@@ -495,7 +495,7 @@ function reportCardReset() {
  d3.select("#engscr").html("")
  d3.select("#engpercent").html("")
  d3.select("#incomemed").html("")
-  d3.select("#incomepctl").html("")
+  d3.select("#incomerank").html("")
   d3.select("#hospitalrate").html("")
   d3.select("#grade").html("")
   // DO WE NEED TO DO THIS?

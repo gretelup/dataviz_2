@@ -40,10 +40,9 @@ def clean_income():
     # Find median income for all of NJ
     income_df["NJ_MED"] = income_df.INCOME.median()
 
-    # Find percentile rank for income in each county and round to 2 decimal
-    # places
-    income_df["PERC_RANK"] = income_df.INCOME.rank(pct=True) * 100
-    income_df["PERC_RANK"] = income_df["PERC_RANK"].round(decimals=2)
+    # Find rank of counties based on income and cast as integer
+    income_df["RANK"] = income_df.INCOME.rank(ascending= False)
+    income_df["RANK"] = income_df["RANK"].astype("int64")
 
     # Connect to database and drop/insert "income" table if exists
     conn = sqlite3.connect("nj_db.db")
