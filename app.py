@@ -96,14 +96,14 @@ def income():
 
     conn = sqlite3.connect("nj_db.db")
     c = conn.cursor()
-    data = c.execute("""SELECT COUNTY, INCOME, NJ_MED, PERC_RANK
+    data = c.execute("""SELECT COUNTY, INCOME, NJ_MED, RANK
         FROM income""").fetchall()
     conn.commit()
     conn.close()
 
     income_dict=[]
     for d in data:
-        dict={"county": d[0] ,"income": d[1], "nj_med": d[2], "perc_rank": d[3]}
+        dict={"county": d[0] ,"income": d[1], "nj_med": d[2], "rank": d[3]}
         income_dict.append(dict)
     
     return jsonify(income_dict)
@@ -115,14 +115,14 @@ def income_county(COUNTY):
 
     conn = sqlite3.connect("nj_db.db")
     c = conn.cursor()
-    data = c.execute("""SELECT COUNTY, INCOME, NJ_MED, PERC_RANK
+    data = c.execute("""SELECT COUNTY, INCOME, NJ_MED, RANK
         FROM income""").fetchall()
     conn.commit()
     conn.close()
 
     income_dict=[]
     for d in data:
-        dict={"county": d[0] ,"income": d[1], "nj_med": d[2], "perc_rank": d[3]}
+        dict={"county": d[0] ,"income": d[1], "nj_med": d[2], "rank": d[3]}
         income_dict.append(dict)
     
     return jsonify(income_dict)
