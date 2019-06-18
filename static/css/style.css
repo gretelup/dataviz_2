@@ -75,7 +75,7 @@ h4 {
   font-size: 60px;
   font-family: Lucida Calligraphy;
 }
-/* GRETEL FIGURE THIS OUT */
+
 #ALL-plots {
   display: inline-block;
   width: 90%;
@@ -120,46 +120,17 @@ h4 {
   left: 0;
 }
 
-/* td {
-  font-weight: bold;
+td {
+  font-weight: 900;
   text-shadow:
     -1px -1px 0 #FFF,  
     1px -1px 0 #FFF,
     -1px 1px 0 #FFF,
     1px 1px 0 #FFF; 
- font-size: 25px;
+  font-size: 35px;
 }
 
-.imageRepeatBox {
-  border: 1px solid black;
-  background-size: 100% 100%;
-  padding: 10px;
-  background-image: url("../images/FlagNewJersey.jpg");
-  background-repeat: no-repeat;
-} */
-
-
-  /* #report-card-card {
-    border: 1px solid black;
-    background-size: 120% 120%;
-    background-blend-mode: lighten;
-    padding: 0px;
-    background-image: url("../images/FlagNewJersey.jpg");
-    background-repeat: no-repeat;
-    opacity: 0.2;
-  } */
-
-  td {
-    font-weight: 900;
-    text-shadow:
-      -1px -1px 0 #FFF,  
-      1px -1px 0 #FFF,
-      -1px 1px 0 #FFF,
-      1px 1px 0 #FFF; 
-   font-size: 35px;
-  }
-
-  th {
-    font-size: 28px;
-    text-align: left;
-  }
+th {
+  font-size: 28px;
+  text-align: left;
+}
