@@ -27,10 +27,7 @@ A friend is looking for a place to live in New Jersey and was overwhelmed with t
 
 * New Jersey School Performance Reports from [New Jersey Department of Education](https://rc.doe.state.nj.us/ReportsDatabase.aspx)
   * Performance data for schools administered by NJ Department of Education.
-  * Utilized SAT scores for 2017-2018 school year from this dataset.
-
-<!-- MIKE - INSERT DATA INFO FOR SAT STUFF HERE -->
-
+  * Utilized SAT scores for 2017-2018 school year from [The College Board](https://collegereadiness.collegeboard.org/pdf/understanding-sat-scores.pdf)
 * Hospital Rating Data from [Medicare](https://data.medicare.gov/Hospital-Compare/Hospital-General-Information/xubh-q36u)
   * Includes a list of all hospitals that have been registered with Medicare
   * Utilized hospital ratings from this dataset.
@@ -44,8 +41,7 @@ A friend is looking for a place to live in New Jersey and was overwhelmed with t
 
 ### Step 1: Extract Data
 
-<!-- MIKE INSERT WHERE YOU GOT DATA FROM HERE -->
-* Downloaded data as csv or excel files from Medicare, NJ Department of Education, and from the Census Bureau.
+* Downloaded data as csv or excel files from Medicare, NJ Department of Education, the College Board and from the Census Bureau.
 * Downloaded geoJson datasets from State of New Jersey - GIS Open Data.
 
 ### Step 2: Clean Data and Enter into Database
