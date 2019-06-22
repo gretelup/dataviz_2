@@ -438,7 +438,7 @@ function reportCard(county) {
   d3.json(url_inc).then(function (incomeData) {
 
     // Unpack data and format data
-    var inc_median = incomeData[0].nj_med;
+    var inc_median = incomeData[0].income;
     var inc_rank = incomeData[0].rank;
 
     // Fill in income data

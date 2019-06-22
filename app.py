@@ -92,8 +92,10 @@ def income_county(COUNTY):
 
     conn = sqlite3.connect("nj_db.db")
     c = conn.cursor()
-    data = c.execute("""SELECT COUNTY, INCOME, NJ_MED, RANK
-        FROM income""").fetchall()
+    query = """SELECT COUNTY, INCOME, NJ_MED, RANK
+       FROM INCOME
+       WHERE COUNTY = ?"""
+    data = c.execute(query,[COUNTY]).fetchall()
     conn.commit()
     conn.close()
 
